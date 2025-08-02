@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import { ThemeContext } from '../theme/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 import pancreasIcon from '../assets/pancreas-icon.png';
 
 const LoginPage: React.FC = () => {
+  const navigate=useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -13,6 +14,29 @@ const LoginPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const { isDark, toggleTheme } = useContext(ThemeContext);
+
+  const sendLoginRequest = async()=>{
+    const response:any = await fetch('http://localhost:8080/api/auth/login',{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body : JSON.stringify(
+        {
+          email:formData.email,
+          password:formData.password,
+        }
+      )
+    });
+
+    if(!response.ok){
+      throw new Error("Registeration was not successfull :${response.stauts}");
+    }
+
+    const result = response.json();
+
+    console.log("User Registered Suessfully",result);
+
+  }
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,6 +48,10 @@ const LoginPage: React.FC = () => {
       
       console.log('Login attempt:', formData);
     }, 1500);
+
+    sendLoginRequest();
+
+    navigate('/upload');
   };
 
   const handleGoogleSignIn = () => {
