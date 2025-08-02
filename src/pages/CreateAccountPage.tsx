@@ -1,10 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../theme/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 import pancreasIcon from '../assets/pancreas-icon.png';
 
 const CreateAccountPage: React.FC = () => {
+
+  const navigate=useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -18,16 +21,60 @@ const CreateAccountPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { isDark, toggleTheme } = useContext(ThemeContext);
 
+
+  const sendLoginRequest = async()=>{
+    const response:any = await fetch('http://localhost:8080/api/auth/register',{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body : JSON.stringify(
+        {
+          firstName:formData.firstName,
+          lastName:formData.lastName,
+          dateOfBirth:formData.dateOfBirth,
+          email:formData.email,
+          password:formData.password,
+          confirmPassword:formData.confirmPassword
+        }
+      )
+    });
+
+    if(!response.ok){
+      throw new Error("Registeration was not successfull :${response.stauts}");
+    }
+
+    const result = response.json();
+
+    console.log("User Registered Suessfully",result);
+
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate account creation process
     setTimeout(() => {
       setIsLoading(false);
-      // TODO: Implement actual account creation logic
+    
       console.log('Account creation attempt:', formData);
     }, 2000);
+
+    if(formData.password !== formData.confirmPassword){
+      alert ("Password doesn't Match please check");
+      return;
+    }
+
+    sendLoginRequest();
+    navigate('/login');
+
+    setFormData({
+      firstName:'',
+      lastName:'',
+      email:'',
+      dateOfBirth:'',
+      password:'',
+      confirmPassword:''
+    })
+
   };
 
   const togglePasswordVisibility = () => {
@@ -38,16 +85,17 @@ const CreateAccountPage: React.FC = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
-      {/* Animated background elements */}
+      
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
         <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
-      {/* Header */}
+      
       <div className="relative z-10 max-w-6xl mx-auto px-4 pt-8 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <Link
@@ -63,10 +111,10 @@ const CreateAccountPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
+      
       <div className="relative z-10 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 py-12">
         <div className="w-full max-w-4xl">
-          {/* Page Title */}
+          
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent sm:text-5xl lg:text-6xl mb-4">
               Join PanInsight
@@ -76,7 +124,7 @@ const CreateAccountPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Create Account Card */}
+          
           <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 dark:border-slate-700/50 overflow-hidden">
             <div className="flex flex-col lg:flex-row">
               {/* Left Side - Image */}
@@ -98,7 +146,7 @@ const CreateAccountPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right Side - Create Account Form */}
+              
               <div className="lg:w-1/2 p-8 lg:p-12">
                 <div className="max-w-md mx-auto">
                   <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-8 text-center">
@@ -106,7 +154,7 @@ const CreateAccountPage: React.FC = () => {
                   </h3>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* First Name Input */}
+                    
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         First Name
@@ -122,7 +170,7 @@ const CreateAccountPage: React.FC = () => {
                       />
                     </div>
 
-                    {/* Last Name Input */}
+                    
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Last Name
@@ -138,7 +186,7 @@ const CreateAccountPage: React.FC = () => {
                       />
                     </div>
 
-                    {/* Date of Birth Input */}
+                    
                     <div>
                       <label htmlFor="dateOfBirth" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Date of Birth
@@ -153,7 +201,7 @@ const CreateAccountPage: React.FC = () => {
                       />
                     </div>
 
-                    {/* Email Input */}
+                  
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Email Address
@@ -169,7 +217,7 @@ const CreateAccountPage: React.FC = () => {
                       />
                     </div>
 
-                    {/* Password Input */}
+                    
                     <div>
                       <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Password
@@ -203,7 +251,7 @@ const CreateAccountPage: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Confirm Password Input */}
+                    
                     <div>
                       <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                         Confirm Password
@@ -237,7 +285,7 @@ const CreateAccountPage: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Create Account Button */}
+                    
                     <button
                       type="submit"
                       disabled={isLoading}
@@ -256,7 +304,7 @@ const CreateAccountPage: React.FC = () => {
                       )}
                     </button>
 
-                    {/* Terms and Conditions */}
+                    
                     <div className="text-center">
                       <p className="text-xs text-slate-500 dark:text-slate-400">
                         By creating an account, you agree to our{' '}
@@ -276,7 +324,7 @@ const CreateAccountPage: React.FC = () => {
                       </p>
                     </div>
 
-                    {/* Sign In Link */}
+                    
                     <div className="text-center">
                       <p className="text-sm text-slate-600 dark:text-slate-400">
                         Already have an account?{' '}
