@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     const authStatus = localStorage.getItem('isAuthenticated') === 'true';
     setIsAuthenticated(authStatus);
     
-    // Check if user just completed OAuth2 flow
+    
     const urlParams = new URLSearchParams(window.location.search);
     const oauth2Success = urlParams.get('oauth2_success');
     const oauth2Failure = urlParams.get('oauth2_failure');
