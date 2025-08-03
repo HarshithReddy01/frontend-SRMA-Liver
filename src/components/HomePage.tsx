@@ -4,11 +4,21 @@ import PanInsightLogo from './PanInsightLogo';
 import ThemeToggle from './ThemeToggle';
 import { ThemeContext } from '../theme/ThemeContext';
 import { requireAuth } from '../utils/authUtils';
+import Notification from './Notification';
 
 const HomePage: React.FC = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userData, setUserData] = useState<any>(null);
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: 'success' | 'error' | 'info';
+    isVisible: boolean;
+  }>({
+    message: '',
+    type: 'success',
+    isVisible: false
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +28,22 @@ const HomePage: React.FC = () => {
     if (userDataStr) {
       setUserData(JSON.parse(userDataStr));
     }
+    
+    // Check if user just logged in (show welcome message)
+    const justLoggedIn = sessionStorage.getItem('justLoggedIn');
+    if (justLoggedIn === 'true') {
+      setNotification({
+        message: 'Logged in successfully! 🎉',
+        type: 'success',
+        isVisible: true
+      });
+      sessionStorage.removeItem('justLoggedIn');
+    }
   }, []);
+
+  const closeNotification = () => {
+    setNotification(prev => ({ ...prev, isVisible: false }));
+  };
 
   const handleLogout = async () => {
     try {
@@ -51,7 +76,11 @@ const HomePage: React.FC = () => {
       }
       
       // Show success message and navigate to home page
-      alert('Logged out successfully! 👋');
+      setNotification({
+        message: 'Logged out successfully! 👋',
+        type: 'success',
+        isVisible: true
+      });
       navigate('/');
       
     } catch (error) {
@@ -61,13 +90,24 @@ const HomePage: React.FC = () => {
       localStorage.removeItem('userData');
       setIsAuthenticated(false);
       setUserData(null);
-      alert('Logged out successfully! 👋');
+      setNotification({
+        message: 'Logged out successfully! 👋',
+        type: 'success',
+        isVisible: true
+      });
       navigate('/');
     }
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+      <Notification
+        message={notification.message}
+        type={notification.type}
+        isVisible={notification.isVisible}
+        onClose={closeNotification}
+        duration={5000}
+      />
       <header className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2 sm:gap-4">

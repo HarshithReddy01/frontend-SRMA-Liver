@@ -110,7 +110,7 @@ const LoginPage: React.FC = () => {
     
     try {
       await sendLoginRequest();
-      alert('Logged in successfully! 🎉');
+      sessionStorage.setItem('justLoggedIn', 'true');
       navigate('/');
     } catch (error) {
       console.error('Submit error:', error);
