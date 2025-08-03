@@ -14,16 +14,14 @@ const LoginPage: React.FC = () => {
   const [error, setError] = useState('');
   const { isDark, toggleTheme } = useContext(ThemeContext);
 
-
   useEffect(() => {
     const authStatus = localStorage.getItem('isAuthenticated') === 'true';
     setIsAuthenticated(authStatus);
   }, []);
 
-  
   const sendLoginRequest = async () => {
     try {
-      console.log('Sending login request to:', 'http://localhost:8081/api/auth/login');
+      console.log('Sending login request to:', 'http://localhost:8080/api/auth/login');
       console.log('Request body:', { email: formData.email, password: formData.password });
       
       const response = await fetch('http://localhost:8080/api/auth/login', {
@@ -59,10 +57,9 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  // Logout function
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8081/api/auth/logout', {
+      const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
         credentials: 'include',
       });
@@ -80,7 +77,6 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -98,7 +94,6 @@ const LoginPage: React.FC = () => {
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
-  
   if (isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
@@ -117,10 +112,8 @@ const LoginPage: React.FC = () => {
     );
   }
 
-  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
-      
       
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob"></div>
@@ -128,7 +121,6 @@ const LoginPage: React.FC = () => {
         <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
-      
       <div className="relative z-10 max-w-6xl mx-auto px-4 pt-8 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <Link
@@ -142,7 +134,6 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
@@ -160,7 +151,6 @@ const LoginPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Error message */}
           {error && (
             <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
               <p className="text-red-800 dark:text-red-200 text-sm">{error}</p>
