@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PanInsightLogo from './PanInsightLogo';
 import ThemeToggle from './ThemeToggle';
 import { ThemeContext } from '../theme/ThemeContext';
-import { requireAuth, isOAuth2User, getLoginType } from '../utils/authUtils';
+import { requireAuth, isOAuth2User } from '../utils/authUtils';
 import Notification from './Notification';
 
 const HomePage: React.FC = () => {
@@ -155,7 +155,7 @@ const HomePage: React.FC = () => {
              ) : (
                <Link
                  to="/login"
-                 className="inline-flex items-center justify-center px-3 py-2 sm:px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103 text-sm sm:text-base min-h-[44px]"
+                 className="inline-flex items-center justify-center px-3 py-2 sm:px-6 bg-blue-600 hover:bg-blue-800 hover:shadow-md hover:shadow-blue-300/50 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103 text-sm sm:text-base min-h-[44px]"
                >
                  <svg className="w-4 h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />

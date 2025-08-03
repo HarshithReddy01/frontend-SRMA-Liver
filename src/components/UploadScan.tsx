@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../theme/ThemeContext';
 import ImageViewer from './ImageViewer';
 import ThemeToggle from './ThemeToggle';
-import { requireAuth } from '../utils/authUtils';
 
 interface UploadScanProps {
   onAnalyze?: (file: File) => void;
