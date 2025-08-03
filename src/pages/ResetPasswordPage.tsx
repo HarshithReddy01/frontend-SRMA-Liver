@@ -146,39 +146,7 @@ const ResetPasswordPage: React.FC = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200"
-                placeholder="Enter your email address"
-                disabled={isLoading}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="otp" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                OTP Code
-              </label>
-              <input
-                type="text"
-                id="otp"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent transition-all duration-200 text-center text-lg font-mono"
-                placeholder="Enter 5-digit OTP"
-                maxLength={5}
-                pattern="[0-9]{5}"
-                disabled={isLoading}
-                required
-              />
-            </div>
+          
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
