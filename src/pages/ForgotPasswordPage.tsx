@@ -77,7 +77,7 @@ const ForgotPasswordPage: React.FC = () => {
       <div className="relative max-w-md mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-slate-200/50 dark:border-slate-600/50">
           <div className="text-center mb-8">
-            <div className="mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center w-16 h-16 mb-4">
+            <div className="mx-auto bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center w-16 h-16 mb-4">
               <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
               </svg>

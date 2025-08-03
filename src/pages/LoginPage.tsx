@@ -238,14 +238,6 @@ const LoginPage: React.FC = () => {
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">
               Sign in to your account
             </h2>
-            <div className="mt-4">
-              <Link
-                to="/register"
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:text-indigo-300 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 transition-colors duration-200"
-              >
-                Create a new account
-              </Link>
-            </div>
           </div>
 
           {error && (
@@ -309,7 +301,15 @@ const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-end">
+            <div className="flex items-center justify-between">
+            <div>
+              <Link
+                to="/register"
+                className="inline-flex items-center px-4 py-2 text-sm font-medium rounded-lg text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:text-indigo-300 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 transition-colors duration-200"
+              >
+                Create a new account
+              </Link>
+            </div>
               <div className="text-sm">
                 <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                   Forgot your password?
@@ -350,7 +350,7 @@ const LoginPage: React.FC = () => {
                   type="button"
                   onClick={handleGoogleLogin}
                   disabled={isGoogleLoading}
-                  className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-blue-600 hover:bg-blue-700 text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="text-black w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-gray-300 hover:bg-gray-400 text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   {isGoogleLoading ? (
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
