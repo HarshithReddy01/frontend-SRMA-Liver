@@ -92,6 +92,11 @@ const CreateAccountPage: React.FC = () => {
       return;
     }
 
+    if(formData.dateOfBirth > new Date().toISOString().split('T')[0]){
+      alert("Date of Birth cannot be in the future");
+      return;
+    }
+
     setIsLoading(true);
     
     try {
