@@ -1,37 +1,89 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import PanInsightLogo from './PanInsightLogo';
 import ThemeToggle from './ThemeToggle';
 import { ThemeContext } from '../theme/ThemeContext';
 
 const HomePage: React.FC = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
+    const userDataStr = localStorage.getItem('userData');
+    setIsAuthenticated(authStatus);
+    if (userDataStr) {
+      setUserData(JSON.parse(userDataStr));
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('userData');
+        setIsAuthenticated(false);
+        setUserData(null);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-      <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
-      
-    
       <header className="px-4 py-6 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               to="/our-work"
-              className="inline-flex items-center px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-full text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 hover:shadow-lg hover:scale-102"
+              className="inline-flex items-center px-3 py-2 sm:px-4 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-full text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 hover:shadow-lg hover:scale-102 text-sm sm:text-base"
             >
-              Our Project
+              <span className="hidden sm:inline">Our Project</span>
+              <span className="sm:hidden">Project</span>
             </Link>
           </div>
-          <div className="flex items-center gap-4">
-            <Link
-              to="/login"
-              className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              Login
-            </Link>
+          <div className="flex items-center gap-2 sm:gap-4">
+            {isAuthenticated ? (
+              <div className="flex items-center gap-2 sm:gap-4">
+                <span className="hidden sm:inline text-sm text-slate-600 dark:text-slate-400">
+                  Welcome, {userData?.firstName || 'User'}
+                </span>
+                <span className="sm:hidden text-xs text-slate-600 dark:text-slate-400">
+                  Hi, {userData?.firstName || 'User'}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex items-center px-3 py-2 sm:px-6 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103 text-sm sm:text-base"
+                >
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span className="hidden sm:inline">Logout</span>
+                  <span className="sm:hidden">Out</span>
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center px-3 py-2 sm:px-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103 text-sm sm:text-base"
+              >
+                <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span className="hidden sm:inline">Login</span>
+                <span className="sm:hidden">In</span>
+              </Link>
+            )}
+            <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
           </div>
         </div>
       </header>

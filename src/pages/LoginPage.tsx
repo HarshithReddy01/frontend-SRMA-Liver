@@ -84,7 +84,7 @@ const LoginPage: React.FC = () => {
     
     try {
       await sendLoginRequest();
-      navigate('/upload');
+      navigate('/');
     } catch (error) {
       console.error('Submit error:', error);
     } finally {
@@ -128,7 +128,7 @@ const LoginPage: React.FC = () => {
             className="group inline-flex items-center px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
           >
             <img src={pancreasIcon} alt="Logo" className="w-6 h-6 mr-2" />
-            <span className="font-semibold text-gray-900 dark:text-white">PancreasAI</span>
+            <span className="font-semibold text-gray-900 dark:text-white">PanInsight</span>
           </Link>
           <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
         </div>
@@ -140,15 +140,14 @@ const LoginPage: React.FC = () => {
             <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">
               Sign in to your account
             </h2>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Or{' '}
+            <div className="mt-4">
               <Link
                 to="/register"
-                className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-indigo-700 bg-indigo-100 hover:bg-indigo-200 dark:text-indigo-300 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 transition-colors duration-200"
               >
-                create a new account
+                Create a new account
               </Link>
-            </p>
+            </div>
           </div>
 
           {error && (
@@ -212,19 +211,7 @@ const LoginPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
-                  Remember me
-                </label>
-              </div>
-
+            <div className="flex items-center justify-end">
               <div className="text-sm">
                 <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                   Forgot your password?

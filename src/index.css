@@ -85,6 +85,29 @@
     background: #3b82f6;
   }
 
+  /* Dark mode form element fixes */
+  .dark input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+  }
+
+  .dark input[type="date"]::-webkit-datetime-edit {
+    color: white;
+  }
+
+  .dark input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+    color: white;
+  }
+
+  .dark input[type="date"]::-webkit-datetime-edit-text {
+    color: white;
+  }
+
+  .dark input[type="date"]::-webkit-datetime-edit-month-field,
+  .dark input[type="date"]::-webkit-datetime-edit-day-field,
+  .dark input[type="date"]::-webkit-datetime-edit-year-field {
+    color: white;
+  }
+
   @keyframes blob {
     0% {
       transform: translate(0px, 0px) scale(1);
