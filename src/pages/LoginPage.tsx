@@ -44,7 +44,7 @@ const LoginPage: React.FC = () => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log('OAuth2 login successful:', result);
+        console.log('OAuth2 login successful:');
         
         if (result.success && result.data && result.data.user) {
           localStorage.setItem('isAuthenticated', 'true');
@@ -90,7 +90,7 @@ const LoginPage: React.FC = () => {
   const sendLoginRequest = async () => {
     try {
       console.log('Sending login request to:', 'http://localhost:8080/api/auth/login');
-      console.log('Request body:', { email: formData.email, password: formData.password });
+      console.log('Request body:', { email: formData.email});
       
       const response = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
@@ -350,7 +350,7 @@ const LoginPage: React.FC = () => {
                   type="button"
                   onClick={handleGoogleLogin}
                   disabled={isGoogleLoading}
-                  className="text-black w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-gray-300 hover:bg-gray-400 text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="text-black w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-gray-300 hover:bg-gray-400 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   {isGoogleLoading ? (
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
