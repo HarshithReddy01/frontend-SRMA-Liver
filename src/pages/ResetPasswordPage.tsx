@@ -16,6 +16,18 @@ const ResetPasswordPage: React.FC = () => {
   const [error, setError] = useState('');
   const { isDark, toggleTheme } = useContext(ThemeContext);
 
+  // Get email and OTP from sessionStorage if available
+  React.useEffect(() => {
+    const resetPasswordEmail = sessionStorage.getItem('resetPasswordEmail');
+    const resetPasswordOTP = sessionStorage.getItem('resetPasswordOTP');
+    if (resetPasswordEmail) {
+      setEmail(resetPasswordEmail);
+    }
+    if (resetPasswordOTP) {
+      setOtp(resetPasswordOTP);
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -56,6 +68,9 @@ const ResetPasswordPage: React.FC = () => {
 
       if (response.ok) {
         setMessage('Password reset successfully! You can now log in with your new password.');
+        // Clear sessionStorage
+        sessionStorage.removeItem('resetPasswordEmail');
+        sessionStorage.removeItem('resetPasswordOTP');
         setTimeout(() => {
           navigate('/login');
         }, 3000);
@@ -230,7 +245,7 @@ const ResetPasswordPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading || !email || !otp || !password || !confirmPassword}
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
