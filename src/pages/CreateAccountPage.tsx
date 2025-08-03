@@ -95,8 +95,16 @@ const CreateAccountPage: React.FC = () => {
     setIsLoading(true);
     
     try {
-      await sendLoginRequest();
-      navigate('/login');
+      const result = await sendLoginRequest();
+      
+      // Check if the response contains redirectUrl
+      if (result.data && result.data.redirectUrl) {
+        // Store registration data in sessionStorage for OTP verification
+        sessionStorage.setItem('registrationData', JSON.stringify(formData));
+        navigate(result.data.redirectUrl);
+      } else {
+        navigate('/login');
+      }
       
       setFormData({
         firstName:'',
