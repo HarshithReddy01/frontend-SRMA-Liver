@@ -59,21 +59,47 @@ const LoginPage: React.FC = () => {
 
   const handleLogout = async () => {
     try {
+      console.log('Attempting logout...');
+      
+      // Clear local storage first (client-side logout)
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userData');
+      setIsAuthenticated(false);
+      setFormData({ email: '', password: '' });
+      setError('');
+      
+      // Try to call backend logout endpoint
       const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
       });
 
+      console.log('Logout response status:', response.status);
+      
       if (response.ok) {
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('userData');
-        setIsAuthenticated(false);
-        setFormData({ email: '', password: '' });
-        setError('');
-        navigate('/login');
+        console.log('Backend logout successful');
+        sessionStorage.clear();
+      } else {
+        console.log('Backend logout failed, but client-side logout completed');
       }
+      
+      // Show success message and navigate to login page
+      alert('Logged out successfully! 👋');
+      navigate('/login');
+      
     } catch (error) {
       console.error('Logout error:', error);
+      // Even if there's an error, clear client-side data and redirect
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userData');
+      setIsAuthenticated(false);
+      setFormData({ email: '', password: '' });
+      setError('');
+      alert('Logged out successfully! 👋');
+      navigate('/login');
     }
   };
 
@@ -84,6 +110,7 @@ const LoginPage: React.FC = () => {
     
     try {
       await sendLoginRequest();
+      alert('Logged in successfully! 🎉');
       navigate('/');
     } catch (error) {
       console.error('Submit error:', error);

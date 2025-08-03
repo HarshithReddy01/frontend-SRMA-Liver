@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import PanInsightLogo from './PanInsightLogo';
 import ThemeToggle from './ThemeToggle';
 import { ThemeContext } from '../theme/ThemeContext';
+import { requireAuth } from '../utils/authUtils';
 
 const HomePage: React.FC = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
@@ -21,20 +22,47 @@ const HomePage: React.FC = () => {
 
   const handleLogout = async () => {
     try {
+      console.log('Attempting logout...');
+      
+      // Clear local storage first (client-side logout)
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userData');
+      setIsAuthenticated(false);
+      setUserData(null);
+      
+      // Try to call backend logout endpoint
       const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         credentials: 'include',
       });
 
+      console.log('Logout response status:', response.status);
+      
       if (response.ok) {
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('userData');
-        setIsAuthenticated(false);
-        setUserData(null);
-        navigate('/');
+        console.log('Backend logout successful');
+        // Additional cleanup if needed
+        sessionStorage.clear();
+      } else {
+        console.log('Backend logout failed, but client-side logout completed');
+        // Even if backend fails, we've already logged out client-side
       }
+      
+      // Show success message and navigate to home page
+      alert('Logged out successfully! 👋');
+      navigate('/');
+      
     } catch (error) {
       console.error('Logout error:', error);
+      // Even if there's an error, clear client-side data and redirect
+      localStorage.removeItem('isAuthenticated');
+      localStorage.removeItem('userData');
+      setIsAuthenticated(false);
+      setUserData(null);
+      alert('Logged out successfully! 👋');
+      navigate('/');
     }
   };
 
@@ -53,22 +81,49 @@ const HomePage: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             {isAuthenticated ? (
-              <div className="flex items-center gap-2 sm:gap-4">
-                <span className="hidden sm:inline text-sm text-slate-600 dark:text-slate-400">
-                  Welcome, {userData?.firstName || 'User'}
-                </span>
-                <span className="sm:hidden text-xs text-slate-600 dark:text-slate-400">
-                  Hi, {userData?.firstName || 'User'}
-                </span>
+              <div className="flex items-center gap-3 sm:gap-6">
+                {/* Stylish Welcome Message */}
+                <div className="relative group">
+                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm border border-blue-200/50 dark:border-slate-600/50 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-sm">
+                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Welcome back</span>
+                      <span className="text-xs font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                        {userData?.firstName || 'User'}
+                      </span>
+                    </div>
+                    <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  {/* Mobile Welcome Message */}
+                  <div className="sm:hidden flex items-center gap-1.5 px-2 py-1 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm border border-blue-200/50 dark:border-slate-600/50 rounded-full shadow-md">
+                    <div className="flex items-center justify-center w-5 h-5 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full">
+                      <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <span className="text-xs font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                      Hi, {userData?.firstName || 'User'}
+                    </span>
+                    <div className="w-1 h-1 bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                
+                {/* Enhanced Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="inline-flex items-center px-3 py-2 sm:px-6 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold rounded-full shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-103 text-sm sm:text-base"
+                  className="group relative inline-flex items-center px-3 py-1.5 sm:px-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:shadow-lg transform hover:scale-105 text-xs sm:text-sm overflow-hidden"
                 >
-                  <svg className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <svg className="relative w-3 h-3 sm:w-4 sm:h-4 mr-1.5 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                   </svg>
-                  <span className="hidden sm:inline">Logout</span>
-                  <span className="sm:hidden">Out</span>
+                  <span className="relative hidden sm:inline">Logout</span>
+                  <span className="relative sm:hidden">Out</span>
                 </button>
               </div>
             ) : (
@@ -103,12 +158,16 @@ const HomePage: React.FC = () => {
             Secure, reliable, and clear medical imaging assistance for radiologists and surgeons.
           </p>
           <div className="mt-10">
-            <Link
-              to="/upload"
+            <button
+              onClick={() => {
+                if (requireAuth(navigate)) {
+                  navigate('/upload');
+                }
+              }}
               className="inline-flex items-center rounded-lg bg-blue-600 dark:bg-blue-500 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-blue-600 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
             >
               Start Diagnosis
-            </Link>
+            </button>
           </div>
         </div>
       </section>

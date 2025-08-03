@@ -1,11 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import backgroundImage from '../assets/background.jpg';
 import professorImage from '../assets/Professor.jpeg';
 import meImage from '../assets/me.png';
 import mem2Image from '../assets/mem2.jpeg';
+import { requireAuth } from '../utils/authUtils';
 
 const OurProjectPage: React.FC = () => {
+  const navigate = useNavigate();
+  
   return (
     <div className="relative min-h-screen flex flex-col" style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm z-0" />
@@ -21,7 +24,16 @@ const OurProjectPage: React.FC = () => {
             Back to Home
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/upload" className="inline-flex items-center rounded-lg bg-blue-500 px-6 py-2 text-base font-semibold text-white shadow-md hover:bg-blue-600 transition-all duration-200">Start Diagnosis</Link>
+            <button
+              onClick={() => {
+                if (requireAuth(navigate)) {
+                  navigate('/upload');
+                }
+              }}
+              className="inline-flex items-center rounded-lg bg-blue-500 px-6 py-2 text-base font-semibold text-white shadow-md hover:bg-blue-600 transition-all duration-200"
+            >
+              Start Diagnosis
+            </button>
           </div>
         </header>
         <main className="max-w-4xl mx-auto px-4 py-8">
