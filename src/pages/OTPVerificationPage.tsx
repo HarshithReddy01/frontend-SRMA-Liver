@@ -77,7 +77,8 @@ const OTPVerificationPage: React.FC = () => {
       if (error instanceof TypeError && error.message.includes('fetch')) {
         setError('Network error. Please check your connection and try again.');
       } else {
-        setError(`Error: ${error.message || 'Unknown error occurred'}`);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+        setError(`Error: ${errorMessage}`);
       }
     } finally {
       setIsVerifying(false);
@@ -214,7 +215,7 @@ const OTPVerificationPage: React.FC = () => {
             <button
               type="submit"
               disabled={isVerifying || !email || !otp}
-              className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full py-3 px-4 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-102 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {isVerifying ? (
                 <div className="flex items-center justify-center">
@@ -233,7 +234,7 @@ const OTPVerificationPage: React.FC = () => {
               type="button"
               onClick={resendOTP}
               disabled={isResending || !email}
-              className="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:scale-102 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {isResending ? (
                 <div className="flex items-center justify-center">
