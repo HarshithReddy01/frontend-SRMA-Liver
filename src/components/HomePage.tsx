@@ -29,7 +29,6 @@ const HomePage: React.FC = () => {
       setUserData(JSON.parse(userDataStr));
     }
     
-    // Check if user just logged in (show welcome message)
     const justLoggedIn = sessionStorage.getItem('justLoggedIn');
     if (justLoggedIn === 'true') {
       setNotification({
@@ -49,14 +48,12 @@ const HomePage: React.FC = () => {
     try {
       console.log('Attempting logout...');
       
-      // Clear local storage first (client-side logout)
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userData');
       localStorage.removeItem('loginType');
       setIsAuthenticated(false);
       setUserData(null);
       
-      // Try to call backend logout endpoint
       const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -69,14 +66,11 @@ const HomePage: React.FC = () => {
       
       if (response.ok) {
         console.log('Backend logout successful');
-        // Additional cleanup if needed
         sessionStorage.clear();
       } else {
         console.log('Backend logout failed, but client-side logout completed');
-        // Even if backend fails, we've already logged out client-side
       }
       
-      // Show success message and navigate to home page
       setNotification({
         message: 'Logged out successfully! 👋',
         type: 'success',
@@ -86,7 +80,6 @@ const HomePage: React.FC = () => {
       
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if there's an error, clear client-side data and redirect
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userData');
       localStorage.removeItem('loginType');
@@ -111,12 +104,10 @@ const HomePage: React.FC = () => {
         duration={5000}
       />
                     <header className="px-4 py-6 sm:px-6 lg:px-8">
-         {/* Desktop Layout */}
          <div className="hidden sm:flex max-w-6xl mx-auto flex-col sm:flex-row justify-between items-center gap-4">
            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-start">
              {isAuthenticated && (
                <>
-                 {/* Desktop Welcome Message - Top Left */}
                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm border border-blue-200/50 dark:border-slate-600/50 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                    <div className="flex items-center justify-center w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-sm">
                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +130,6 @@ const HomePage: React.FC = () => {
            <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-center sm:justify-end">
              {isAuthenticated ? (
                <div className="flex items-center gap-2 sm:gap-6 w-full sm:w-auto justify-center sm:justify-end">
-                 {/* Enhanced Logout Button */}
                  <button
                    onClick={handleLogout}
                    className="group relative inline-flex items-center justify-center px-3 py-2 sm:px-4 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:shadow-lg transform hover:scale-105 text-xs sm:text-sm overflow-hidden min-h-[44px]"
@@ -168,9 +158,7 @@ const HomePage: React.FC = () => {
            </div>
          </div>
 
-         {/* Mobile Layout */}
          <div className="sm:hidden flex justify-between items-center">
-                       {/* Left: Logout Button */}
             <div className="flex-shrink-0">
               {isAuthenticated ? (
                 <button
@@ -196,7 +184,6 @@ const HomePage: React.FC = () => {
               )}
             </div>
 
-                       {/* Center: User Info */}
             <div className="flex-1 flex justify-center px-2">
               {isAuthenticated && (
                 <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm border border-blue-200/50 dark:border-slate-600/50 rounded-full shadow-sm min-h-[40px] w-full max-w-none">
@@ -226,7 +213,7 @@ const HomePage: React.FC = () => {
               )}
             </div>
 
-           {/* Right: Theme Toggle */}
+            
            <div className="flex-shrink-0">
              <ThemeToggle isDark={isDark} onToggle={toggleTheme} />
            </div>

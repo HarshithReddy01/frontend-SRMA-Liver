@@ -14,7 +14,7 @@ const OTPVerificationPage: React.FC = () => {
   const [otp, setOtp] = useState('');
   const { isDark, toggleTheme } = useContext(ThemeContext);
 
-  // Get email from URL params if available
+  
   React.useEffect(() => {
     const emailParam = searchParams.get('email');
     if (emailParam) {
@@ -29,7 +29,7 @@ const OTPVerificationPage: React.FC = () => {
     setMessage('');
 
     try {
-      // Get registration data from sessionStorage
+      
       const registrationData = sessionStorage.getItem('registrationData');
       if (!registrationData) {
         setError('Registration data not found. Please try registering again.');
@@ -64,7 +64,7 @@ const OTPVerificationPage: React.FC = () => {
 
       if (response.ok) {
         setMessage('Email verified successfully! Your account has been created. Redirecting to login...');
-        // Clear registration data from sessionStorage
+        
         sessionStorage.removeItem('registrationData');
         setTimeout(() => {
           navigate('/login');

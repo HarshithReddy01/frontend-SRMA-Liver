@@ -36,7 +36,7 @@ const ForgotPasswordPage: React.FC = () => {
 
       if (response.ok) {
         setMessage('Password reset OTP sent successfully! Redirecting to OTP verification...');
-        // Store email in sessionStorage for OTP verification
+        
         sessionStorage.setItem('resetPasswordEmail', email);
         setTimeout(() => {
           navigate('/otp-verification-reset');

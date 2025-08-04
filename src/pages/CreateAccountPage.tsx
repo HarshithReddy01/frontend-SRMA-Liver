@@ -51,7 +51,7 @@ const CreateAccountPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate all required fields
+    
     if (!formData.firstName.trim()) {
       alert("First Name is required");
       return;
@@ -102,9 +102,9 @@ const CreateAccountPage: React.FC = () => {
     try {
       const result = await sendLoginRequest();
       
-      // Check if the response contains redirectUrl
+      
       if (result.data && result.data.redirectUrl) {
-        // Store registration data in sessionStorage for OTP verification
+        
         sessionStorage.setItem('registrationData', JSON.stringify(formData));
         navigate(result.data.redirectUrl);
       } else {
@@ -138,7 +138,7 @@ const CreateAccountPage: React.FC = () => {
 
   const handleGoogleSignUp = () => {
     console.log('Google sign-up clicked');
-    // Add Google sign-up logic here
+    
   };
 
 

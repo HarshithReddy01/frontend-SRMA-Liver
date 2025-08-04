@@ -138,7 +138,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Generate sample report data
+      
       const sampleReportData = {
         scanType: fileInfo.file.name.toLowerCase().endsWith('.dcm') ? 'DICOM CT Scan' : 'Medical Image',
         analysisDate: new Date().toLocaleDateString('en-US', { 
@@ -174,7 +174,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
         followUpTimeline: "Recommended follow-up in 6-12 months with repeat imaging and consultation with your healthcare provider."
       };
       
-      // Store report data in localStorage and navigate to report page
+    
       localStorage.setItem('paninsight-report', JSON.stringify(sampleReportData));
       navigate('/report', { state: { reportData: sampleReportData } });
       

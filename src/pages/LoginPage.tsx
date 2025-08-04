@@ -35,8 +35,6 @@ const LoginPage: React.FC = () => {
     try {
       setIsGoogleLoading(true);
       setError('');
-      
-      // Call the OAuth2 success endpoint to get user data
       const response = await fetch('http://localhost:8080/api/auth/oauth2-success', {
         method: 'GET',
         credentials: 'include',
@@ -53,7 +51,7 @@ const LoginPage: React.FC = () => {
           setIsAuthenticated(true);
           setError('');
           
-          // Clean up URL parameters
+          
           window.history.replaceState({}, document.title, window.location.pathname);
           
           sessionStorage.setItem('justLoggedIn', 'true');
@@ -78,7 +76,7 @@ const LoginPage: React.FC = () => {
       setIsGoogleLoading(true);
       setError('');
       
-      // Redirect to Spring Boot OAuth2 authorization endpoint
+      
       window.location.href = 'http://localhost:8080/oauth2/authorization/google';
     } catch (error) {
       console.error('Google login error:', error);
@@ -130,7 +128,7 @@ const LoginPage: React.FC = () => {
     try {
       console.log('Attempting logout...');
       
-      // Clear local storage first (client-side logout)
+      
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userData');
       localStorage.removeItem('loginType');
@@ -138,7 +136,7 @@ const LoginPage: React.FC = () => {
       setFormData({ email: '', password: '' });
       setError('');
       
-      // Try to call backend logout endpoint
+      
       const response = await fetch('http://localhost:8080/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -156,13 +154,13 @@ const LoginPage: React.FC = () => {
         console.log('Backend logout failed, but client-side logout completed');
       }
       
-      // Show success message and navigate to login page
+      
       alert('Logged out successfully! 👋');
       navigate('/login');
       
     } catch (error) {
       console.error('Logout error:', error);
-      // Even if there's an error, clear client-side data and redirect
+      
       localStorage.removeItem('isAuthenticated');
       localStorage.removeItem('userData');
       localStorage.removeItem('loginType');

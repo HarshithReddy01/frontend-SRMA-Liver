@@ -13,7 +13,6 @@ const OTPVerificationResetPage: React.FC = () => {
   const [otp, setOtp] = useState('');
   const { isDark, toggleTheme } = useContext(ThemeContext);
 
-  // Get email from sessionStorage if available
   React.useEffect(() => {
     const resetPasswordEmail = sessionStorage.getItem('resetPasswordEmail');
     if (resetPasswordEmail) {
@@ -44,7 +43,7 @@ const OTPVerificationResetPage: React.FC = () => {
 
       if (response.ok) {
         setMessage('OTP verified successfully! Redirecting to reset password page...');
-        // Store email and OTP in sessionStorage for reset password page
+        
         sessionStorage.setItem('resetPasswordEmail', email);
         sessionStorage.setItem('resetPasswordOTP', otp);
         setTimeout(() => {

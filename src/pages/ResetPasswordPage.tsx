@@ -68,7 +68,7 @@ const ResetPasswordPage: React.FC = () => {
 
       if (response.ok) {
         setMessage('Password reset successfully! You can now log in with your new password.');
-        // Clear sessionStorage
+            
         sessionStorage.removeItem('resetPasswordEmail');
         sessionStorage.removeItem('resetPasswordOTP');
         setTimeout(() => {
