@@ -268,7 +268,7 @@ const CreateAccountPage: React.FC = () => {
                         className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white/50 dark:bg-slate-700/50 backdrop-blur-sm text-slate-900 dark:text-white transition-all duration-200"
                         required
                       >
-                        <option value="">Select gender</option>
+                        <option value="" disabled>Select gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="prefer-not-to-say">Prefer not to say</option>
