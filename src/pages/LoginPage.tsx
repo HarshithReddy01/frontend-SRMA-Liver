@@ -155,7 +155,7 @@ const LoginPage: React.FC = () => {
       }
       
       
-      alert('Logged out successfully! 👋');
+      alert('Logged out successfully!');
       navigate('/login');
       
     } catch (error) {
@@ -167,7 +167,7 @@ const LoginPage: React.FC = () => {
       setIsAuthenticated(false);
       setFormData({ email: '', password: '' });
       setError('');
-      alert('Logged out successfully! 👋');
+      alert('Logged out successfully!');
       navigate('/login');
     }
   };
@@ -195,7 +195,7 @@ const LoginPage: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            You are logged in! 🎉
+            You are logged in!
           </h2>
           <button
             onClick={handleLogout}
