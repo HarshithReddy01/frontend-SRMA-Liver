@@ -5,6 +5,7 @@ import ThemeToggle from './ThemeToggle';
 import { ThemeContext } from '../theme/ThemeContext';
 import { requireAuth, isOAuth2User } from '../utils/authUtils';
 import Notification from './Notification';
+import PancreaticChatbot from './PancreaticChatbot';
 
 const HomePage: React.FC = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
@@ -333,6 +334,9 @@ const HomePage: React.FC = () => {
           </p>
         </div>
       </footer>
+      
+      {/* Pancreatic Health Chatbot */}
+      <PancreaticChatbot />
     </div>
   );
 };
