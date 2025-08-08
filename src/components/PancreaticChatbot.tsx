@@ -108,8 +108,8 @@ const PancreaticChatbot: React.FC = () => {
           isOpen
             ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
             : isDark 
-              ? 'bg-orange-500 hover:bg-orange-600 text-white border-orange-400 shadow-orange-500/30' 
-              : 'bg-orange-500 hover:bg-orange-600 text-white border-orange-400 shadow-orange-500/40'
+              ? 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/30' 
+              : 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/40'
         }`}
         aria-label="Toggle chatbot"
       >
