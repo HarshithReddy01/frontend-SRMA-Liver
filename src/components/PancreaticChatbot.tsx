@@ -101,7 +101,7 @@ const PancreaticChatbot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Toggle Button */}
+     
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`fixed bottom-6 right-6 z-50 group flex items-center gap-3 px-6 py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 ${
@@ -132,14 +132,14 @@ const PancreaticChatbot: React.FC = () => {
         )}
       </button>
 
-      {/* Chat Window */}
+      
       {isOpen && (
         <div className={`fixed bottom-28 right-6 z-40 w-80 h-96 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
           isDark 
             ? 'bg-slate-800 border-slate-600' 
             : 'bg-white border-gray-200'
         }`}>
-          {/* Chat Header */}
+          
           <div className={`flex items-center justify-between p-4 rounded-t-2xl ${
             isDark ? 'bg-slate-700' : 'bg-gradient-to-r from-green-400 to-green-400'
           } text-white`}>
@@ -157,7 +157,7 @@ const PancreaticChatbot: React.FC = () => {
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
           </div>
 
-          {/* Messages Container */}
+          
           <div className="flex-1 p-4 overflow-y-auto h-80 sm:h-96">
             <div className="space-y-4">
               {messages.map((message) => (
@@ -204,7 +204,7 @@ const PancreaticChatbot: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
+          
           <div className={`p-4 border-t ${
             isDark ? 'border-slate-600 bg-slate-800' : 'border-gray-200 bg-white'
           }`}>
