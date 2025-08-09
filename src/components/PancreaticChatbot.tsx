@@ -134,13 +134,13 @@ const PancreaticChatbot: React.FC = () => {
 
       
       {isOpen && (
-        <div className={`fixed bottom-28 right-6 z-40 w-80 h-96 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
+        <div className={`fixed bottom-24 right-4 sm:bottom-28 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
           isDark 
             ? 'bg-slate-800 border-slate-600' 
             : 'bg-white border-gray-200'
         }`}>
           
-          <div className={`flex items-center justify-between p-4 rounded-t-2xl ${
+          <div className={`flex items-center justify-between p-3 sm:p-4 rounded-t-2xl ${
             isDark ? 'bg-slate-700' : 'bg-gradient-to-r from-green-400 to-green-400'
           } text-white`}>
             <div className="flex items-center space-x-3">
@@ -169,7 +169,7 @@ const PancreaticChatbot: React.FC = () => {
           </div>
 
           
-          <div className="flex-1 p-4 overflow-y-auto h-80 sm:h-96">
+          <div className="flex-1 p-3 sm:p-4 overflow-y-auto h-60 sm:h-96">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -216,7 +216,7 @@ const PancreaticChatbot: React.FC = () => {
           </div>
 
           
-          <div className={`p-4 border-t ${
+          <div className={`p-3 sm:p-4 border-t ${
             isDark ? 'border-slate-600 bg-slate-800' : 'border-gray-200 bg-white'
           }`}>
             <div className="flex space-x-2">
@@ -228,7 +228,7 @@ const PancreaticChatbot: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about pancreatic health..."
                 disabled={isLoading}
-                className={`flex-1 px-4 py-2 rounded-full text-sm border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`flex-1 px-3 py-2 sm:px-4 sm:py-2 rounded-full text-sm border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   isDark
                     ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
                     : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500'
@@ -237,7 +237,7 @@ const PancreaticChatbot: React.FC = () => {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className={`p-2 rounded-full transition-all duration-200 ${
+                className={`p-2 sm:p-2.5 rounded-full transition-all duration-200 ${
                   inputMessage.trim() && !isLoading
                     ? isDark
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
@@ -247,7 +247,7 @@ const PancreaticChatbot: React.FC = () => {
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
               </button>
