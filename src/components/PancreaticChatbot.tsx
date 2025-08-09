@@ -104,7 +104,7 @@ const PancreaticChatbot: React.FC = () => {
      
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 group flex items-center gap-3 px-6 py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 ${
+        className={`fixed bottom-6 right-6 z-50 group items-center gap-2 sm:gap-3 px-3 py-3 sm:px-6 sm:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 ${isOpen ? 'hidden sm:flex' : 'flex'} ${
           isOpen
             ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
             : isDark 
@@ -115,19 +115,19 @@ const PancreaticChatbot: React.FC = () => {
       >
         {isOpen ? (
           <>
-            <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
-            <span className="text-sm font-semibold whitespace-nowrap">Close Chat</span>
+            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">Close Chat</span>
           </>
         ) : (
           <>
             <img 
               src={pancreasIcon} 
               alt="Pancreas Icon" 
-              className="w-6 h-6 flex-shrink-0"
+              className="w-6 h-6 sm:w-6 sm:h-6 flex-shrink-0"
             />
-            <span className="text-sm font-semibold whitespace-nowrap">Need clarity? Ask our AI</span>
+            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">Need clarity? Ask our AI</span>
           </>
         )}
       </button>
@@ -154,7 +154,18 @@ const PancreaticChatbot: React.FC = () => {
                 <p className="text-xs opacity-90">Ask me about pancreatic health</p>
               </div>
             </div>
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="flex items-center">
+              <div className="hidden sm:block w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="sm:hidden p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
+                aria-label="Close chat"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           
