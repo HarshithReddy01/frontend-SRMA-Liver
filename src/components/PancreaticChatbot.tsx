@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
 import pancreasIcon from '../assets/pancreas-icon.png';
+import { isAuthenticated } from '../utils/authUtils';
+import { useNavigate } from 'react-router-dom';
 
 interface ChatMessage {
   id: string;
@@ -11,12 +13,13 @@ interface ChatMessage {
 
 const PancreaticChatbot: React.FC = () => {
   const { isDark } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId] = useState(() => 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9));
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: '1',
-      message: "Hello there!, How can I assist you today?",
+      message: "Hello! I'm your pancreatic health assistant. Ask me about pancreatic diseases, symptoms, or treatments.",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       isUserMessage: false
     }
@@ -40,8 +43,35 @@ const PancreaticChatbot: React.FC = () => {
     }
   }, [isOpen]);
 
+  // Close chatbot when user logs out
+  useEffect(() => {
+    const handleStorageChange = () => {
+      if (!isAuthenticated() && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also check on mount
+    if (!isAuthenticated() && isOpen) {
+      setIsOpen(false);
+    }
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [isOpen]);
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
+
+    // Check if user is authenticated
+    if (!isAuthenticated()) {
+      setIsOpen(false);
+      navigate('/login');
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -67,6 +97,22 @@ const PancreaticChatbot: React.FC = () => {
       });
 
       const data = await response.json();
+
+      if (response.status === 401) {
+        // User is not authenticated, redirect to login
+        const errorMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          message: "Please log in to continue using the chatbot. Redirecting to login page...",
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          isUserMessage: false
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        setTimeout(() => {
+          setIsOpen(false);
+          navigate('/login');
+        }, 2000);
+        return;
+      }
 
       if (data.reply) {
         const botMessage: ChatMessage = {
@@ -101,18 +147,19 @@ const PancreaticChatbot: React.FC = () => {
 
   return (
     <>
-     
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 group items-center gap-2 sm:gap-3 px-3 py-3 sm:px-6 sm:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 ${isOpen ? 'hidden sm:flex' : 'flex'} ${
-          isOpen
-            ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
-            : isDark 
-              ? 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/30' 
-              : 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/40'
-        }`}
-        aria-label="Toggle chatbot"
-      >
+      {/* Only show chatbot button if user is authenticated */}
+      {isAuthenticated() && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`fixed bottom-6 right-6 z-50 group items-center gap-2 sm:gap-3 px-3 py-3 sm:px-6 sm:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 ${isOpen ? 'hidden sm:flex' : 'flex'} ${
+            isOpen
+              ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
+              : isDark 
+                ? 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/30' 
+                : 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/40'
+          }`}
+          aria-label="Toggle chatbot"
+        >
         {isOpen ? (
           <>
             <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,13 +174,35 @@ const PancreaticChatbot: React.FC = () => {
               alt="Pancreas Icon" 
               className="w-6 h-6 sm:w-6 sm:h-6 flex-shrink-0"
             />
-            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">Need clarity? Ask our AI</span>
+            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">
+              {isAuthenticated() ? 'Need clarity? Ask our AI' : 'Login to chat with AI'}
+            </span>
           </>
         )}
       </button>
+      )}
+
+      {/* Show login prompt for non-authenticated users */}
+      {!isAuthenticated() && (
+        <button
+          onClick={() => navigate('/login')}
+          className={`fixed bottom-6 right-6 z-50 group items-center gap-2 sm:gap-3 px-3 py-3 sm:px-6 sm:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-103 border-2 flex ${
+            isDark 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-transparent shadow-blue-500/30' 
+              : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-transparent shadow-blue-500/40'
+          }`}
+          aria-label="Login to access chatbot"
+        >
+          <svg className="w-6 h-6 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+          </svg>
+          <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">Login to chat with AI</span>
+        </button>
+      )}
 
       
-      {isOpen && (
+      {/* Only show chatbot interface if user is authenticated and chatbot is open */}
+      {isAuthenticated() && isOpen && (
         <div className={`fixed bottom-24 right-4 sm:bottom-28 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
           isDark 
             ? 'bg-slate-800 border-slate-600' 

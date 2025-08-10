@@ -324,6 +324,38 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Chatbot Feature Section */}
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-2xl">
+              <div className="flex items-center space-x-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500 dark:bg-green-400">
+                  <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <div className="text-left">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                    AI Health Assistant
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    {isAuthenticated 
+                      ? "Chat with our AI assistant about pancreatic health questions. Available 24/7!"
+                      : "Login to access our AI health assistant for personalized pancreatic health guidance."
+                    }
+                  </p>
+                  {!isAuthenticated && (
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center mt-2 text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300"
+                    >
+                      Login to access →
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
