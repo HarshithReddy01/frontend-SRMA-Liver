@@ -325,7 +325,6 @@ const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Chatbot Feature Section */}
           <div className="mt-16 text-center">
             <div className="inline-flex items-center justify-center p-4 bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 rounded-2xl">
               <div className="flex items-center space-x-4">

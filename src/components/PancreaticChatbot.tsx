@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
 import pancreasIcon from '../assets/pancreas-icon.png';
-import { isAuthenticated } from '../utils/authUtils';
+import { isAuthenticated, checkAuthWithBackend } from '../utils/authUtils';
 import { useNavigate } from 'react-router-dom';
 
 interface ChatMessage {
@@ -43,7 +43,7 @@ const PancreaticChatbot: React.FC = () => {
     }
   }, [isOpen]);
 
-  // Close chatbot when user logs out
+  
   useEffect(() => {
     const handleStorageChange = () => {
       if (!isAuthenticated() && isOpen) {
@@ -53,7 +53,7 @@ const PancreaticChatbot: React.FC = () => {
 
     window.addEventListener('storage', handleStorageChange);
     
-    // Also check on mount
+    
     if (!isAuthenticated() && isOpen) {
       setIsOpen(false);
     }
@@ -66,8 +66,24 @@ const PancreaticChatbot: React.FC = () => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
 
-    // Check if user is authenticated
-    if (!isAuthenticated()) {
+    
+    console.log('Checking authentication status...');
+    const localAuthStatus = isAuthenticated();
+    console.log('Local authentication status:', localAuthStatus);
+    
+    if (!localAuthStatus) {
+      console.log('User not authenticated locally, redirecting to login');
+      setIsOpen(false);
+      navigate('/login');
+      return;
+    }
+    
+  
+    const backendAuthStatus = await checkAuthWithBackend();
+    console.log('Backend authentication status:', backendAuthStatus);
+    
+    if (!backendAuthStatus) {
+      console.log('User not authenticated on backend, redirecting to login');
       setIsOpen(false);
       navigate('/login');
       return;
@@ -85,21 +101,25 @@ const PancreaticChatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
+      console.log('Sending request to chatbot API...');
       const response = await fetch('http://localhost:8080/api/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ 
           message: userMessage.message,
           sessionId: sessionId 
         }),
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (response.status === 401) {
-        // User is not authenticated, redirect to login
+        
         const errorMessage: ChatMessage = {
           id: (Date.now() + 1).toString(),
           message: "Please log in to continue using the chatbot. Redirecting to login page...",
@@ -145,9 +165,11 @@ const PancreaticChatbot: React.FC = () => {
     }
   };
 
+
+
   return (
     <>
-      {/* Only show chatbot button if user is authenticated */}
+    
       {isAuthenticated() && (
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -182,7 +204,6 @@ const PancreaticChatbot: React.FC = () => {
       </button>
       )}
 
-      {/* Show login prompt for non-authenticated users */}
       {!isAuthenticated() && (
         <button
           onClick={() => navigate('/login')}
@@ -201,44 +222,44 @@ const PancreaticChatbot: React.FC = () => {
       )}
 
       
-      {/* Only show chatbot interface if user is authenticated and chatbot is open */}
-      {isAuthenticated() && isOpen && (
-        <div className={`fixed bottom-24 right-4 sm:bottom-28 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
-          isDark 
-            ? 'bg-slate-800 border-slate-600' 
-            : 'bg-white border-gray-200'
-        }`}>
+             {/* Only show chatbot interface if user is authenticated and chatbot is open */}
+       {isAuthenticated() && isOpen && (
+         <div className={`fixed bottom-36 right-4 sm:bottom-28 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
+           isDark 
+             ? 'bg-slate-800 border-slate-600' 
+             : 'bg-white border-gray-200'
+         }`}>
           
-          <div className={`flex items-center justify-between p-3 sm:p-4 rounded-t-2xl ${
-            isDark ? 'bg-slate-700' : 'bg-gradient-to-r from-green-400 to-green-400'
-          } text-white`}>
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 className="font-semibold text-sm">Pancreatic Health Assistant</h3>
-                <p className="text-xs opacity-90">Ask me about pancreatic health</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <div className="hidden sm:block w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="sm:hidden p-1 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
-                aria-label="Close chat"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
+                     <div className={`flex items-center justify-between p-3 sm:p-4 rounded-t-2xl ${
+             isDark ? 'bg-slate-700' : 'bg-gradient-to-r from-green-400 to-green-400'
+           } text-white`}>
+             <div className="flex items-center space-x-3 flex-1 min-w-0">
+               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                 </svg>
+               </div>
+                               <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-sm truncate">Pancreatic Health Assistant</h3>
+                  <p className="text-xs opacity-90 truncate">Ask me about pancreatic health</p>
+                </div>
+             </div>
+             <div className="flex items-center flex-shrink-0 ml-2">
+               <div className="hidden sm:block w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
+               <button
+                 onClick={() => setIsOpen(false)}
+                 className="p-1.5 rounded-full hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 flex-shrink-0"
+                 aria-label="Close chat"
+               >
+                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                 </svg>
+               </button>
+             </div>
+           </div>
 
           
-          <div className="flex-1 p-3 sm:p-4 overflow-y-auto h-60 sm:h-96">
+                     <div className="flex-1 p-3 sm:p-4 overflow-y-auto h-52 sm:h-96">
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
@@ -285,9 +306,9 @@ const PancreaticChatbot: React.FC = () => {
           </div>
 
           
-          <div className={`p-3 sm:p-4 border-t ${
-            isDark ? 'border-slate-600 bg-slate-800' : 'border-gray-200 bg-white'
-          }`}>
+                     <div className={`p-3 sm:p-4 pb-4 border-t ${
+             isDark ? 'border-slate-600 bg-slate-800' : 'border-gray-200 bg-white'
+           }`}>
             <div className="flex space-x-2">
               <input
                 ref={inputRef}
@@ -297,7 +318,7 @@ const PancreaticChatbot: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about pancreatic health..."
                 disabled={isLoading}
-                className={`flex-1 px-3 py-2 sm:px-4 sm:py-2 rounded-full text-sm border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                className={`flex-1 px-3 py-2.5 sm:px-4 sm:py-2.5 rounded-full text-sm border transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   isDark
                     ? 'bg-slate-700 border-slate-600 text-white placeholder-slate-400'
                     : 'bg-gray-50 border-gray-300 text-gray-900 placeholder-gray-500'
@@ -306,7 +327,7 @@ const PancreaticChatbot: React.FC = () => {
               <button
                 onClick={handleSendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className={`p-2 sm:p-2.5 rounded-full transition-all duration-200 ${
+                className={`p-2.5 sm:p-2.5 rounded-full transition-all duration-200 ${
                   inputMessage.trim() && !isLoading
                     ? isDark
                       ? 'bg-blue-600 hover:bg-blue-700 text-white'
