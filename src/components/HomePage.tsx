@@ -6,6 +6,7 @@ import { ThemeContext } from '../theme/ThemeContext';
 import { requireAuth, isOAuth2User } from '../utils/authUtils';
 import Notification from './Notification';
 import PancreaticChatbot from './PancreaticChatbot';
+import { API_ENDPOINTS } from '../config/api';
 
 const HomePage: React.FC = () => {
   const { isDark, toggleTheme } = useContext(ThemeContext);
@@ -55,7 +56,7 @@ const HomePage: React.FC = () => {
       setIsAuthenticated(false);
       setUserData(null);
       
-      const response = await fetch('http://localhost:8080/api/auth/logout', {
+      const response = await fetch(API_ENDPOINTS.LOGOUT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

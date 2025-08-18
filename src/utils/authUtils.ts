@@ -3,9 +3,11 @@ export const isAuthenticated = (): boolean => {
   return localAuth;
 };
 
+import { API_ENDPOINTS } from '../config/api';
+
 export const checkAuthWithBackend = async (): Promise<boolean> => {
   try {
-    const response = await fetch('http://localhost:8080/api/auth/check-auth', {
+    const response = await fetch(API_ENDPOINTS.CHECK_AUTH, {
       method: 'GET',
       credentials: 'include',
     });

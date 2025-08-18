@@ -4,6 +4,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { ThemeContext } from '../theme/ThemeContext';
 import ThemeToggle from '../components/ThemeToggle';
 import pancreasIcon from '../assets/pancreas-icon.png';
+import { API_ENDPOINTS } from '../config/api';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const LoginPage: React.FC = () => {
     try {
       setIsGoogleLoading(true);
       setError('');
-      const response = await fetch('http://localhost:8080/api/auth/oauth2-success', {
+      const response = await fetch(API_ENDPOINTS.OAUTH2_SUCCESS, {
         method: 'GET',
         credentials: 'include',
       });
@@ -77,7 +78,7 @@ const LoginPage: React.FC = () => {
       setError('');
       
       
-      window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+      window.location.href = API_ENDPOINTS.OAUTH2_GOOGLE;
     } catch (error) {
       console.error('Google login error:', error);
       setError('Failed to initiate Google login');
@@ -87,10 +88,10 @@ const LoginPage: React.FC = () => {
 
   const sendLoginRequest = async () => {
     try {
-      console.log('Sending login request to:', 'http://localhost:8080/api/auth/login');
+      console.log('Sending login request to:', API_ENDPOINTS.LOGIN);
       console.log('Request body:', { email: formData.email});
       
-      const response = await fetch('http://localhost:8080/api/auth/login', {
+      const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -137,7 +138,7 @@ const LoginPage: React.FC = () => {
       setError('');
       
       
-      const response = await fetch('http://localhost:8080/api/auth/logout', {
+      const response = await fetch(API_ENDPOINTS.LOGOUT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

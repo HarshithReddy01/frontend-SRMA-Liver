@@ -3,6 +3,7 @@ import { ThemeContext } from '../theme/ThemeContext';
 import pancreasIcon from '../assets/pancreas-icon.png';
 import { isAuthenticated, checkAuthWithBackend } from '../utils/authUtils';
 import { useNavigate } from 'react-router-dom';
+import { API_ENDPOINTS } from '../config/api';
 
 interface ChatMessage {
   id: string;
@@ -102,7 +103,7 @@ const PancreaticChatbot: React.FC = () => {
 
     try {
       console.log('Sending request to chatbot API...');
-      const response = await fetch('http://localhost:8080/api/ask', {
+      const response = await fetch(API_ENDPOINTS.CHATBOT_ASK, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
