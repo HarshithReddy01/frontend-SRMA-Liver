@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiSend, FiMessageCircle, FiX, FiLock, FiHelpCircle } from 'react-icons/fi';
 import { isAuthenticated } from '../utils/authUtils';
+import { useNavigate } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -10,6 +11,7 @@ interface Message {
 }
 
 const PublicChatbot: React.FC = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -224,7 +226,7 @@ const PublicChatbot: React.FC = () => {
                      Please log in to your PanInsight account to access the AI health assistant.
                    </p>
                    <button
-                     onClick={() => window.location.href = '/#/login'}
+                     onClick={() => navigate('/login')}
                      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                    >
                      Go to Login
