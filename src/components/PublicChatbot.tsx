@@ -173,15 +173,15 @@ const PublicChatbot: React.FC = () => {
 
   return (
     <>
-      {/* Floating Chat Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white rounded-full px-6 py-3 shadow-lg transition-all duration-300 z-50 flex items-center space-x-2"
-        aria-label="Ask AI assistant"
-      >
-        <FiHelpCircle size={20} />
-        <span className="font-medium">Need clarity? Ask our AI</span>
-      </button>
+             {/* Floating Chat Button */}
+       <button
+         onClick={() => setIsOpen(true)}
+         className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 hover:border-green-700 text-gray-700 hover:text-gray-900 rounded-full px-6 py-3 shadow-lg transition-all duration-300 z-50 flex items-center space-x-2 border border-gray-300"
+         aria-label="Ask AI assistant"
+       >
+         <FiHelpCircle size={20} />
+         <span className="font-medium">Need clarity? Ask our AI</span>
+       </button>
 
              {/* Chat Modal */}
        {isOpen && (
