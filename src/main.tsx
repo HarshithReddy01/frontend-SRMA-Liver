@@ -13,6 +13,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import OTPVerificationPage from './pages/OTPVerificationPage'
 import OTPVerificationResetPage from './pages/OTPVerificationResetPage'
+import AppLayout from './components/AppLayout'
 import './index.css'
 import { ThemeProvider } from './theme/ThemeContext'
 
@@ -21,18 +22,20 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ThemeProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/upload" element={<UploadScan />} />
-          <Route path="/report" element={<AnalysisReport />} />
-          <Route path="/our-work" element={<OurProjectPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<CreateAccountPage />} />
-          <Route path="/verify-email" element={<VerifyEmailPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/otp-verification" element={<OTPVerificationPage />} />
-          <Route path="/otp-verification-reset" element={<OTPVerificationResetPage />} />
+          <Route path="/" element={<AppLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="upload" element={<UploadScan />} />
+            <Route path="report" element={<AnalysisReport />} />
+            <Route path="our-work" element={<OurProjectPage />} />
+            <Route path="contact" element={<ContactPage />} />
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<CreateAccountPage />} />
+            <Route path="verify-email" element={<VerifyEmailPage />} />
+            <Route path="forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="reset-password" element={<ResetPasswordPage />} />
+            <Route path="otp-verification" element={<OTPVerificationPage />} />
+            <Route path="otp-verification-reset" element={<OTPVerificationResetPage />} />
+          </Route>
         </Routes>
       </Router>
     </ThemeProvider>

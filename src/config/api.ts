@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   OAUTH2_SUCCESS: `${API_BASE_URL}/api/auth/oauth2-success`,
   OAUTH2_GOOGLE: `${API_BASE_URL}/oauth2/authorization/google`,
   
- 
+  // Chatbot endpoints
   CHATBOT_ASK: `${API_BASE_URL}/api/ask`,
+  CHATBOT_HEALTH: `${API_BASE_URL}/api/chat/health`,
 };
