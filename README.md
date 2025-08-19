@@ -92,6 +92,22 @@ The interface employs a clean, medical-grade aesthetic with carefully chosen col
 
 **Medical Disclaimers**: Appropriate medical disclaimers are prominently displayed to ensure users understand the educational nature of the AI analysis and the importance of professional medical consultation.
 
+## Deployment and Infrastructure
+
+### Production Deployment
+
+**Backend Services**: The application backend is deployed on Amazon EC2 using Docker containers, ensuring consistent deployment across environments and easy scaling capabilities. The Docker setup includes all necessary dependencies and configurations for reliable operation.
+
+**Frontend Hosting**: The React frontend is deployed on GitHub Pages, providing fast global content delivery and seamless integration with our development workflow. The frontend communicates with the EC2-hosted backend services through secure API endpoints.
+
+**Domain and Access**: Users can access the application through the GitHub Pages URL, which provides a clean and professional interface while maintaining secure communication with the backend services.
+
+### Development and CI/CD
+
+**Version Control**: All code is managed through Git with GitHub as the primary repository, enabling collaborative development and version tracking.
+
+**Automated Deployment**: The deployment process is automated to ensure consistent updates and minimal downtime during releases.
+
 ## Team and Development
 
 ### Our Expert Team
@@ -127,7 +143,6 @@ Our development approach prioritizes user safety, data privacy, and medical accu
 4. **Consultation**: Share the generated report with your healthcare provider
 5. **Follow-up**: Follow the recommended next steps and timeline for continued care
 
-
 ## Technology Stack
 
 - **Frontend Framework**: React 18 with TypeScript
@@ -137,13 +152,29 @@ Our development approach prioritizes user safety, data privacy, and medical accu
 - **PDF Generation**: jsPDF with autoTable
 - **Icons**: React Icons library
 - **Development**: Vite build tool
-- **Deployment**: GitHub Pages
+- **Frontend Deployment**: GitHub Pages
+- **Backend Deployment**: Amazon EC2 with Docker
+- **Containerization**: Docker
 
 ## Contributing and Contact
 
 PanInsight is developed with the goal of improving pancreatic cancer detection outcomes. If you're a healthcare professional, researcher, or developer interested in contributing to this mission, we welcome your input and collaboration.
 
 For more information about our project, technical details, or potential partnerships, please visit our contact page or reach out to our development team.
+
+### Contact Our Team
+
+**Dr. Debesh Jha - Technical Lead**
+- Website: [https://debeshjha.com/](https://debeshjha.com/)
+- Research Focus: Deep learning architectures for medical image analysis, AI-driven diagnostics.
+
+**Harshith Reddy Nalla - Full-Stack Developer**
+- Portfolio: [https://harshithreddy01.github.io/My-Web/](https://harshithreddy01.github.io/My-Web/)
+- Expertise: Application architecture, Backenend Devlopment, frontend development, user experience design.
+
+**Sai Sankar Swarna - Backend & MLOps**
+- LinkedIn: [https://www.linkedin.com/in/swanra-sai-sankar-000797191/](https://www.linkedin.com/in/swanra-sai-sankar-000797191/)
+- Specialization: Backend services, API development, machine learning operations.
 
 ## License and Legal
 
@@ -153,4 +184,4 @@ For more information about our project, technical details, or potential partners
 
 ---
 
-*PanInsight - Where AI meets medical expertise to provide clarity when it matters most.*
+*PanInsight – Where AI meets medical expertise to provide clarity when it matters most, bringing comfort in uncertainty and contributing to a healthier, better society.*
