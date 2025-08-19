@@ -21,7 +21,16 @@ const LoginPage: React.FC = () => {
     setIsAuthenticated(authStatus);
     
     
-    const urlParams = new URLSearchParams(window.location.search);
+    // Handle both regular routing and hash routing
+    let urlParams;
+    if (window.location.hash.includes('?')) {
+      // Hash routing - parameters are after #/login?
+      const hashParams = window.location.hash.split('?')[1];
+      urlParams = new URLSearchParams(hashParams);
+    } else {
+      // Regular routing - parameters are in search
+      urlParams = new URLSearchParams(window.location.search);
+    }
     const oauth2Success = urlParams.get('oauth2_success');
     const oauth2Failure = urlParams.get('oauth2_failure');
     
@@ -53,7 +62,8 @@ const LoginPage: React.FC = () => {
           setError('');
           
           
-          window.history.replaceState({}, document.title, window.location.pathname);
+          // Clean up URL for hash routing
+          window.history.replaceState({}, document.title, window.location.pathname + window.location.hash.split('?')[0]);
           
           sessionStorage.setItem('justLoggedIn', 'true');
           navigate('/');

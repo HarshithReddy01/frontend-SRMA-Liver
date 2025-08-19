@@ -31,6 +31,25 @@ const HomePage: React.FC = () => {
       setUserData(JSON.parse(userDataStr));
     }
     
+    // Check for OAuth2 success/failure parameters (handle both regular and hash routing)
+    let urlParams;
+    if (window.location.hash.includes('?')) {
+      // Hash routing - parameters are after #/?
+      const hashParams = window.location.hash.split('?')[1];
+      urlParams = new URLSearchParams(hashParams);
+    } else {
+      // Regular routing - parameters are in search
+      urlParams = new URLSearchParams(window.location.search);
+    }
+    const oauth2Success = urlParams.get('oauth2_success');
+    const oauth2Failure = urlParams.get('oauth2_failure');
+    
+    if (oauth2Success === 'true' || oauth2Failure === 'true') {
+      // Redirect to login page to handle OAuth2 response
+      navigate('/login');
+      return;
+    }
+    
     const justLoggedIn = sessionStorage.getItem('justLoggedIn');
     if (justLoggedIn === 'true') {
       setNotification({
@@ -40,7 +59,7 @@ const HomePage: React.FC = () => {
       });
       sessionStorage.removeItem('justLoggedIn');
     }
-  }, []);
+  }, [navigate]);
 
   const closeNotification = () => {
     setNotification(prev => ({ ...prev, isVisible: false }));

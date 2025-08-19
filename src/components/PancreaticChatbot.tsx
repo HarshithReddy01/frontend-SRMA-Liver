@@ -68,23 +68,17 @@ const PancreaticChatbot: React.FC = () => {
     if (!inputMessage.trim() || isLoading) return;
 
     
-    console.log('Checking authentication status...');
     const localAuthStatus = isAuthenticated();
-    console.log('Local authentication status:', localAuthStatus);
     
     if (!localAuthStatus) {
-      console.log('User not authenticated locally, redirecting to login');
       setIsOpen(false);
       navigate('/login');
       return;
     }
     
-  
     const backendAuthStatus = await checkAuthWithBackend();
-    console.log('Backend authentication status:', backendAuthStatus);
     
     if (!backendAuthStatus) {
-      console.log('User not authenticated on backend, redirecting to login');
       setIsOpen(false);
       navigate('/login');
       return;
@@ -102,7 +96,6 @@ const PancreaticChatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      console.log('Sending request to chatbot API...');
       const response = await fetch(API_ENDPOINTS.CHATBOT_ASK, {
         method: 'POST',
         headers: {
@@ -115,9 +108,7 @@ const PancreaticChatbot: React.FC = () => {
         }),
       });
 
-      console.log('Response status:', response.status);
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (response.status === 401) {
         

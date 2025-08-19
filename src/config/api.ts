@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = 'http://65.0.121.98:8080';
+export const API_BASE_URL = 'https://api.paninsight.org';
 
 // API Endpoints
 export const API_ENDPOINTS = {
