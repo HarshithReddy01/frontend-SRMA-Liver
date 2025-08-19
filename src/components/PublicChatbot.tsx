@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiSend, FiMessageCircle, FiX, FiLock, FiHelpCircle } from 'react-icons/fi';
-import { API_ENDPOINTS } from '../config/api';
 import { isAuthenticated } from '../utils/authUtils';
 
 interface Message {

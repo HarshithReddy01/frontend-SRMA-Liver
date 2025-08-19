@@ -355,10 +355,10 @@ const LoginPage: React.FC = () => {
               </div>
 
               <div className="mt-6">
-                <button
+                <button 
                   type="button"
                   onClick={handleGoogleLogin}
-                  disabled={isGoogleLoading}
+                  disabled={true}
                   className="text-black w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-gray-300 hover:bg-gray-400 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                 >
                   {isGoogleLoading ? (
