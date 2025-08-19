@@ -11,17 +11,41 @@ const ContactPage: React.FC = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
 
-    setTimeout(() => {
-      alert('Thank you for your message! We will get back to you soon.');
-      setFormData({ name: '', email: '', message: '' });
+    try {
+      const response = await fetch('https://formspree.io/f/mwpqdpqg', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _replyto: formData.email,
+        }),
+      });
+
+      if (response.ok) {
+        setShowSuccessMessage(true);
+        setFormData({ name: '', email: '', message: '' });
+        setTimeout(() => {
+          setShowSuccessMessage(false);
+        }, 5000);
+      } else {
+        alert('There was an error sending your message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error sending your message. Please try again.');
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -61,6 +85,15 @@ const ContactPage: React.FC = () => {
             
             <div className="bg-slate-800/90 rounded-2xl shadow-lg p-8 border border-slate-600/50 max-w-2xl mx-auto">
               <h3 className="text-xl font-bold text-white mb-6 text-center">Send us a Message</h3>
+              
+              {showSuccessMessage && (
+                <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg">
+                  <p className="text-green-400 text-center font-medium">
+                    Our Team will get back to you very shortly.
+                  </p>
+                </div>
+              )}
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">

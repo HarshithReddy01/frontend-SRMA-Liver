@@ -188,9 +188,9 @@ const PancreaticChatbot: React.FC = () => {
               alt="Pancreas Icon" 
               className="w-6 h-6 sm:w-6 sm:h-6 flex-shrink-0"
             />
-            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">
-              {isAuthenticated() ? 'Need clarity? Ask our AI' : 'Login to chat with AI'}
-            </span>
+                         <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">
+               {isAuthenticated() ? 'Consult AI' : 'Login to chat with AI'}
+             </span>
           </>
         )}
       </button>
@@ -214,9 +214,8 @@ const PancreaticChatbot: React.FC = () => {
       )}
 
       
-             {/* Only show chatbot interface if user is authenticated and chatbot is open */}
        {isAuthenticated() && isOpen && (
-         <div className={`fixed bottom-36 right-4 sm:bottom-28 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
+         <div className={`fixed bottom-20 right-4 sm:bottom-16 sm:right-6 z-40 w-72 h-80 sm:w-96 sm:h-[500px] rounded-2xl shadow-2xl border transition-all duration-300 ${
            isDark 
              ? 'bg-slate-800 border-slate-600' 
              : 'bg-white border-gray-200'

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiSend, FiMessageCircle, FiX, FiLock, FiHelpCircle } from 'react-icons/fi';
+import { FiSend, FiMessageCircle, FiX, FiLock } from 'react-icons/fi';
 import { isAuthenticated } from '../utils/authUtils';
 import { useNavigate } from 'react-router-dom';
+import pancreasIcon from '../assets/pancreas-icon.png';
 
 interface Message {
   id: string;
@@ -19,14 +20,12 @@ const PublicChatbot: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Check authentication status when component mounts and when modal opens
   useEffect(() => {
     const authStatus = isAuthenticated();
     console.log('PublicChatbot - Auth status:', authStatus);
     setIsLoggedIn(authStatus);
     
     if (authStatus && messages.length === 0) {
-      // Initialize welcome message for logged-in users
       setMessages([{
         id: '1',
         text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
@@ -36,17 +35,17 @@ const PublicChatbot: React.FC = () => {
     }
   }, [isOpen, messages.length]);
 
-  // Listen for authentication changes
+  
   useEffect(() => {
     const handleStorageChange = () => {
       const authStatus = isAuthenticated();
       setIsLoggedIn(authStatus);
       
       if (!authStatus) {
-        // Clear messages when user logs out
+        
         setMessages([]);
       } else if (authStatus && messages.length === 0) {
-        // Initialize welcome message when user logs in
+        
         setMessages([{
           id: '1',
           text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
@@ -57,8 +56,6 @@ const PublicChatbot: React.FC = () => {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
-    // Also check on focus in case user logged in/out in another tab
     window.addEventListener('focus', handleStorageChange);
 
     return () => {
@@ -79,8 +76,6 @@ const PublicChatbot: React.FC = () => {
     if (!inputMessage.trim() || isLoading) return;
 
     console.log('PublicChatbot - Sending message, isLoggedIn:', isLoggedIn);
-
-    // Check if user is logged in before allowing chat
     if (!isLoggedIn) {
       const loginMessage: Message = {
         id: Date.now().toString(),
@@ -104,28 +99,27 @@ const PublicChatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Direct call to DeepInfra API for logged-in users only
       const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer mVF4JYfmpeE8ywod0P1cGzalCQNjG1kQ'
         },
-        body: JSON.stringify({
-          model: 'meta-llama/Meta-Llama-3-8B-Instruct',
-          messages: [
-            {
-              role: 'system',
-              content: `You are a specialized pancreatic health assistant. You only answer questions about pancreatic anatomy, diseases, symptoms, treatments, and related medical topics. If someone asks about other topics, politely redirect them to pancreatic health questions. Keep responses concise, educational, and always emphasize that you provide information for educational purposes only and that users should consult healthcare professionals for medical advice.`
-            },
-            {
-              role: 'user',
-              content: inputMessage
-            }
-          ],
-          max_tokens: 500,
-          temperature: 0.7
-        })
+                 body: JSON.stringify({
+           model: 'meta-llama/Meta-Llama-3-8B-Instruct',
+           messages: [
+             {
+               role: 'system',
+               content: `You are a specialized pancreatic health assistant. Provide concise, clear, and direct answers. Keep responses brief but informative. For simple questions, give short answers (1-2 sentences). For complex topics, provide comprehensive but concise explanations (2-3 sentences maximum). Always emphasize that information is for educational purposes only and users should consult healthcare professionals for medical advice.`
+             },
+             {
+               role: 'user',
+               content: inputMessage
+             }
+           ],
+           max_tokens: 100,
+           temperature: 0.7
+         })
       });
 
       if (response.ok) {
@@ -138,7 +132,6 @@ const PublicChatbot: React.FC = () => {
         };
         setMessages((prev: Message[]) => [...prev, botMessage]);
       } else {
-        // Fallback response if API fails
         const botMessage: Message = {
           id: (Date.now() + 1).toString(),
           text: "I'm having trouble connecting to the AI service right now. Please try again in a moment.",
@@ -174,21 +167,25 @@ const PublicChatbot: React.FC = () => {
 
   return (
     <>
-             {/* Floating Chat Button */}
-       <button
-         onClick={() => setIsOpen(true)}
-         className="fixed bottom-6 right-6 bg-green-600 hover:bg-green-700 hover:border-green-700 text-gray-700 hover:text-gray-900 rounded-full px-6 py-3 shadow-lg transition-all duration-300 z-50 flex items-center space-x-2 border border-gray-300"
-         aria-label="Ask AI assistant"
-       >
-         <FiHelpCircle size={20} />
-         <span className="font-medium">Need clarity? Ask our AI</span>
-       </button>
+             
+               <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 bg-blue-500 hover:bg-green-500 hover:border-green-400 text-white rounded-full px-3 py-3 sm:px-6 sm:py-3 shadow-lg transition-all duration-300 z-50 flex items-center space-x-1 sm:space-x-2 border border-blue-400"
+          aria-label="Ask AI assistant"
+        >
+          <img 
+            src={pancreasIcon} 
+            alt="Pancreas Icon" 
+            className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+          />
+          <span className="font-medium text-sm sm:text-base hidden sm:inline">Consult AI</span>
+          <span className="font-medium text-sm sm:hidden">AI</span>
+        </button>
 
-             {/* Chat Modal */}
-       {isOpen && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-4 z-50">
-           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 h-screen max-h-screen flex flex-col">
-            {/* Header */}
+             
+               {isOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-4 z-50">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 h-[500px] max-h-screen flex flex-col">
             <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-2">
                 <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
@@ -206,10 +203,7 @@ const PublicChatbot: React.FC = () => {
                 <FiX size={20} />
               </button>
             </div>
-
-                         {/* Messages */}
              <div className="flex-1 overflow-y-auto p-4 space-y-4">
-               {/* Debug info - remove this later */}
                <div className="text-xs text-gray-500 mb-2">
                  
                </div>
@@ -268,8 +262,6 @@ const PublicChatbot: React.FC = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
-
-            {/* Input */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex space-x-2">
                 <input
