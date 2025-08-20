@@ -46,15 +46,16 @@ const LoginPage: React.FC = () => {
       setIsGoogleLoading(true);
       setError('');
       
-  
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Add a delay to ensure backend session is properly established
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       const response = await fetch(API_ENDPOINTS.OAUTH2_SUCCESS, {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         }
       });
 
@@ -93,16 +94,25 @@ const LoginPage: React.FC = () => {
           errorMessage = errorText || errorMessage;
         }
         
-        throw new Error(errorMessage);
+        // If it's a session issue, suggest retrying
+        if (errorMessage.includes('No session found')) {
+          setError('Session expired. Please try signing in with Google again.');
+          // Clear any existing session data
+          localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('userData');
+          localStorage.removeItem('loginType');
+        } else {
+          throw new Error(errorMessage);
+        }
       }
     } catch (error) {
       console.error('OAuth2 success handler error:', error);
       setError(error instanceof Error ? error.message : 'OAuth2 login failed');
       
-              // If it's a session/authentication issue, suggest retrying
-        if (error instanceof Error && (error.message.includes('No static resource') || error.message.includes('401') || error.message.includes('403'))) {
-          setError('Session expired. Please try signing in with Google again.');
-        }
+      // If it's a session/authentication issue, suggest retrying
+      if (error instanceof Error && (error.message.includes('No static resource') || error.message.includes('401') || error.message.includes('403'))) {
+        setError('Session expired. Please try signing in with Google again.');
+      }
     } finally {
       setIsGoogleLoading(false);
     }
