@@ -26,9 +26,10 @@ const CreateAccountPage: React.FC = () => {
 
 
   const sendLoginRequest = async () => {
-          const response = await fetch(API_ENDPOINTS.REGISTER, {
+    const response = await fetch(API_ENDPOINTS.REGISTER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({
         firstName: formData.firstName,
         lastName: formData.lastName,
