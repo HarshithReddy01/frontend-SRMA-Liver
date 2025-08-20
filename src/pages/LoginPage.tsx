@@ -20,28 +20,34 @@ const LoginPage: React.FC = () => {
     const authStatus = localStorage.getItem('isAuthenticated') === 'true';
     setIsAuthenticated(authStatus);
     
-    
-    // Handle both regular routing and hash routing
+    // Handle both regular routing and hash routing with better error handling
     let urlParams;
-    if (window.location.hash.includes('?')) {
-      // Hash routing - parameters are after #/login?
-      const hashParams = window.location.hash.split('?')[1];
-      urlParams = new URLSearchParams(hashParams);
-    } else {
-      // Regular routing - parameters are in search
-      urlParams = new URLSearchParams(window.location.search);
+    try {
+      if (window.location.hash.includes('?')) {
+        // Hash routing - parameters are after #/login?
+        const hashParams = window.location.hash.split('?')[1];
+        urlParams = new URLSearchParams(hashParams);
+      } else {
+        // Regular routing - parameters are in search
+        urlParams = new URLSearchParams(window.location.search);
+      }
+    } catch (error) {
+      console.error('Error parsing URL parameters:', error);
+      urlParams = new URLSearchParams();
     }
+    
     const oauth2Success = urlParams.get('oauth2_success');
     const oauth2Failure = urlParams.get('oauth2_failure');
+    const sessionId = urlParams.get('sessionId');
     
     if (oauth2Success === 'true') {
-      handleOAuth2Success();
+      handleOAuth2Success(sessionId);
     } else if (oauth2Failure === 'true') {
       setError('Google login failed. Please try again.');
     }
   }, []);
 
-  const handleOAuth2Success = async () => {
+  const handleOAuth2Success = async (sessionId?: string | null) => {
     try {
       setIsGoogleLoading(true);
       setError('');
@@ -49,7 +55,13 @@ const LoginPage: React.FC = () => {
       // Add a delay to ensure backend session is properly established
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      const response = await fetch(API_ENDPOINTS.OAUTH2_SUCCESS, {
+      // Build the URL with session ID if available
+      let url = API_ENDPOINTS.OAUTH2_SUCCESS;
+      if (sessionId) {
+        url += `?sessionId=${encodeURIComponent(sessionId)}`;
+      }
+      
+      const response = await fetch(url, {
         method: 'GET',
         credentials: 'include',
         headers: {
