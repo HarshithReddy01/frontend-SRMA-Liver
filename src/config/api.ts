@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = 'https://api.paninsight.org';
+export const API_BASE_URL = 'https://ai.paninsight.org';
 
 // API Endpoints
 export const API_ENDPOINTS = {
