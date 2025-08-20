@@ -45,37 +45,64 @@ const LoginPage: React.FC = () => {
     try {
       setIsGoogleLoading(true);
       setError('');
+      
+  
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
       const response = await fetch(API_ENDPOINTS.OAUTH2_SUCCESS, {
         method: 'GET',
         credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache'
+        }
       });
+
+      console.log('OAuth2 Success Response Status:', response.status);
+      console.log('OAuth2 Success Response Headers:', response.headers);
 
       if (response.ok) {
         const result = await response.json();
-        console.log('OAuth2 login successful:');
+        console.log('OAuth2 login successful:', result);
         
         if (result.success && result.data && result.data.user) {
           localStorage.setItem('isAuthenticated', 'true');
           localStorage.setItem('userData', JSON.stringify(result.data.user));
           localStorage.setItem('loginType', 'GOOGLE_OAUTH2');
-          console.log("isLoading",isGoogleLoading);
           setIsAuthenticated(true);
           setError('');
           
+          // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname + window.location.hash.split('?')[0]);
           
           sessionStorage.setItem('justLoggedIn', 'true');
           navigate('/');
         } else {
-          throw new Error('Invalid OAuth2 response');
+          throw new Error('Invalid OAuth2 response structure');
         }
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'OAuth2 login failed');
+        const errorText = await response.text();
+        console.error('OAuth2 Success Error Response:', errorText);
+        
+        // Try to parse as JSON, fallback to text
+        let errorMessage = 'OAuth2 login failed';
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.message || errorMessage;
+        } catch (e) {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error('OAuth2 success handler error:', error);
       setError(error instanceof Error ? error.message : 'OAuth2 login failed');
+      
+              // If it's a session/authentication issue, suggest retrying
+        if (error instanceof Error && (error.message.includes('No static resource') || error.message.includes('401') || error.message.includes('403'))) {
+          setError('Session expired. Please try signing in with Google again.');
+        }
     } finally {
       setIsGoogleLoading(false);
     }
