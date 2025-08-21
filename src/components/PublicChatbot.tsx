@@ -170,7 +170,7 @@ const PublicChatbot: React.FC = () => {
              
                <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 bg-blue-500 hover:bg-green-500 hover:border-green-400 text-white rounded-full px-3 py-3 sm:px-6 sm:py-3 shadow-lg transition-all duration-300 z-50 flex items-center space-x-1 sm:space-x-2 border border-blue-400"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 bg-blue-500 hover:bg-green-500 hover:border-green-400 text-white rounded-full px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 shadow-lg transition-all duration-300 z-50 flex items-center space-x-1 sm:space-x-2 border border-blue-400 transform hover:scale-105 chatbot-button"
           aria-label="Ask AI assistant"
         >
           <img 
@@ -184,49 +184,49 @@ const PublicChatbot: React.FC = () => {
 
              
                {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-4 z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-96 h-[500px] max-h-screen flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                  <FiMessageCircle className="text-white " size={16} />
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-0 sm:p-4 z-50">
+                         <div className="bg-white dark:bg-gray-800 rounded-none sm:rounded-lg shadow-xl w-full h-full sm:w-80 sm:h-96 md:w-96 md:h-[500px] lg:w-[300px] lg:h-[350px] xl:w-[500px] xl:h-[650px] 2xl:w-[550px] 2xl:h-[700px] flex flex-col chatbot-container">
+            <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-2 sm:space-x-3">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-600 rounded-full flex items-center justify-center">
+                  <FiMessageCircle className="text-white" size={16} />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white">PanInsight AI</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Pancreatic Health Assistant</p>
-                </div>
+                                 <div>
+                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base lg:text-lg">PanInsight AI</h3>
+                   <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Pancreatic Health Assistant</p>
+                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
               >
                 <FiX size={20} />
               </button>
             </div>
-             <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 h-[calc(100vh-140px)] sm:h-80 md:h-96 lg:h-[200px] xl:h-[520px] 2xl:h-[580px] chatbot-messages">
                <div className="text-xs text-gray-500 mb-2">
                  
                </div>
                
-               {!isLoggedIn && messages.length === 0 && (
-                 <div className="flex flex-col items-center justify-center h-full text-center">
-                   <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
-                     <FiLock className="text-gray-500 dark:text-gray-400" size={24} />
-                   </div>
-                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                     Login Required
-                   </h3>
-                   <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                     Please log in to your PanInsight account to access the AI health assistant.
-                   </p>
-                   <button
-                     onClick={() => navigate('/login')}
-                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                   >
-                     Go to Login
-                   </button>
-                 </div>
-               )}
+                               {!isLoggedIn && messages.length === 0 && (
+                  <div className="flex flex-col items-center justify-center h-full text-center">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-2 sm:mb-3">
+                      <FiLock className="text-gray-500 dark:text-gray-400" size={16} />
+                    </div>
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2">
+                      Login Required
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 px-2 sm:px-4">
+                      Please log in to your PanInsight account to access the AI health assistant.
+                    </p>
+                    <button
+                      onClick={() => navigate('/login')}
+                      className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm"
+                    >
+                      Go to Login
+                    </button>
+                  </div>
+                )}
               
               {messages.map((message) => (
                 <div
@@ -234,13 +234,13 @@ const PublicChatbot: React.FC = () => {
                   className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                    className={`max-w-[85%] sm:max-w-xs md:max-w-sm lg:max-w-md xl:max-w-lg px-3 py-2 sm:px-4 sm:py-2 rounded-lg chatbot-message ${
                       message.isUser
                         ? 'bg-blue-600 text-white'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
                     }`}
                   >
-                    <p className="text-sm">{message.text}</p>
+                    <p className="text-sm break-words chatbot-message-content">{message.text}</p>
                     <p className={`text-xs mt-1 ${
                       message.isUser ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400'
                     }`}>
@@ -251,7 +251,7 @@ const PublicChatbot: React.FC = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg">
+                  <div className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg max-w-[85%] sm:max-w-xs">
                     <div className="flex space-x-1">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -262,26 +262,26 @@ const PublicChatbot: React.FC = () => {
               )}
               <div ref={messagesEndRef} />
             </div>
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={isLoggedIn ? "Ask about pancreatic health..." : "Login required to chat"}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                  disabled={isLoading || !isLoggedIn}
-                />
-                <button
-                  onClick={handleSendMessage}
-                  disabled={!inputMessage.trim() || isLoading || !isLoggedIn}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  <FiSend size={16} />
-                </button>
-              </div>
-            </div>
+                         <div className="p-3 sm:p-4 pb-4 sm:pb-6 border-t border-gray-200 dark:border-gray-700 chatbot-input-container">
+               <div className="flex space-x-2">
+                 <input
+                   type="text"
+                   value={inputMessage}
+                   onChange={(e) => setInputMessage(e.target.value)}
+                   onKeyPress={handleKeyPress}
+                   placeholder={isLoggedIn ? "Ask about pancreatic health..." : "Login required to chat"}
+                   className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm chatbot-input"
+                   disabled={isLoading || !isLoggedIn}
+                 />
+                 <button
+                   onClick={handleSendMessage}
+                   disabled={!inputMessage.trim() || isLoading || !isLoggedIn}
+                   className="px-3 py-2 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                 >
+                   <FiSend size={16} />
+                 </button>
+               </div>
+             </div>
           </div>
         </div>
       )}
