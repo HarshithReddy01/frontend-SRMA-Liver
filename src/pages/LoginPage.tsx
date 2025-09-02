@@ -19,16 +19,12 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const authStatus = localStorage.getItem('isAuthenticated') === 'true';
     setIsAuthenticated(authStatus);
-    
-    // Handle both regular routing and hash routing with better error handling
     let urlParams;
     try {
       if (window.location.hash.includes('?')) {
-        // Hash routing - parameters are after #/login?
         const hashParams = window.location.hash.split('?')[1];
         urlParams = new URLSearchParams(hashParams);
       } else {
-        // Regular routing - parameters are in search
         urlParams = new URLSearchParams(window.location.search);
       }
     } catch (error) {
@@ -52,10 +48,8 @@ const LoginPage: React.FC = () => {
       setIsGoogleLoading(true);
       setError('');
       
-      // Add a delay to ensure backend session is properly established
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Build the URL with session ID if available
       let url = API_ENDPOINTS.OAUTH2_SUCCESS;
       if (sessionId) {
         url += `?sessionId=${encodeURIComponent(sessionId)}`;
@@ -85,7 +79,6 @@ const LoginPage: React.FC = () => {
           setIsAuthenticated(true);
           setError('');
           
-          // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname + window.location.hash.split('?')[0]);
           
           sessionStorage.setItem('justLoggedIn', 'true');
@@ -97,7 +90,6 @@ const LoginPage: React.FC = () => {
         const errorText = await response.text();
         console.error('OAuth2 Success Error Response:', errorText);
         
-        // Try to parse as JSON, fallback to text
         let errorMessage = 'OAuth2 login failed';
         try {
           const errorData = JSON.parse(errorText);
@@ -106,10 +98,8 @@ const LoginPage: React.FC = () => {
           errorMessage = errorText || errorMessage;
         }
         
-        // If it's a session issue, suggest retrying
         if (errorMessage.includes('No session found')) {
           setError('Session expired. Please try signing in with Google again.');
-          // Clear any existing session data
           localStorage.removeItem('isAuthenticated');
           localStorage.removeItem('userData');
           localStorage.removeItem('loginType');
@@ -121,7 +111,6 @@ const LoginPage: React.FC = () => {
       console.error('OAuth2 success handler error:', error);
       setError(error instanceof Error ? error.message : 'OAuth2 login failed');
       
-      // If it's a session/authentication issue, suggest retrying
       if (error instanceof Error && (error.message.includes('No static resource') || error.message.includes('401') || error.message.includes('403'))) {
         setError('Session expired. Please try signing in with Google again.');
       }
