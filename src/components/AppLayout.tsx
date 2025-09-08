@@ -5,7 +5,6 @@ import PublicChatbot from './PublicChatbot';
 const AppLayout: React.FC = () => {
   const location = useLocation();
   
-  // Don't show chatbot on login, register, or other auth pages
   const isAuthPage = location.pathname === '/login' || 
                     location.pathname === '/register' || 
                     location.pathname === '/verify-email' ||
