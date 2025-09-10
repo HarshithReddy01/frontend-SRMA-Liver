@@ -14,9 +14,22 @@
     <meta property="og:url" content="https://app.paninsight.org" />
     <meta property="og:image" content="./pancreas-icon.png" />
     <link rel="canonical" href="https://app.paninsight.org" />
+    <script type="module" crossorigin src="/PanInsight/assets/index-a0b6601a.js"></script>
+    <link rel="stylesheet" href="/PanInsight/assets/index-b6bf11ab.css">
+    <script>
+      var pathSegmentsToKeep = 0;
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    
   </body>
-</html> 
+</html>
