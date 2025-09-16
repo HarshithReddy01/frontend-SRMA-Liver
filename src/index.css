@@ -7,6 +7,12 @@
   html {
     font-family: 'Inter', system-ui, sans-serif;
   }
+  
+  :root {
+    --safe-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    --taskbar-height: 40px; 
+  }
+
 }
 
 @layer components {
@@ -190,6 +196,50 @@
   @media (max-width: 640px) {
     .chatbot-input-container {
       padding-bottom: calc(1rem + env(safe-area-inset-bottom, 16px));
+    }
+  }
+
+  .chatbot-button {
+    bottom: 12px !important;
+  }
+
+  @media (max-width: 640px) {
+    .chatbot-button {
+      bottom: 8px !important;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .chatbot-button {
+      bottom: 12px !important;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .chatbot-button {
+      bottom: 16px !important;
+    }
+  }
+
+  .chatbot-container {
+    bottom: 68px !important;
+  }
+
+  @media (max-width: 640px) {
+    .chatbot-container {
+      bottom: 56px !important;
+    }
+  }
+
+  @media (min-width: 641px) and (max-width: 1024px) {
+    .chatbot-container {
+      bottom: 72px !important;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .chatbot-container {
+      bottom: 80px !important;
     }
   }
 

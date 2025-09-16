@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiSend, FiMessageCircle, FiX, FiLock } from 'react-icons/fi';
+import { FiMessageCircle, FiLock, FiSend } from 'react-icons/fi';
 import { isAuthenticated } from '../utils/authUtils';
 import { useNavigate } from 'react-router-dom';
 import pancreasIcon from '../assets/pancreas-icon.png';
@@ -105,21 +105,21 @@ const PublicChatbot: React.FC = () => {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer mVF4JYfmpeE8ywod0P1cGzalCQNjG1kQ'
         },
-                 body: JSON.stringify({
-           model: 'meta-llama/Meta-Llama-3-8B-Instruct',
-           messages: [
-             {
-               role: 'system',
-               content: `You are a specialized pancreatic health assistant. Provide concise, clear, and direct answers. Keep responses brief but informative. For simple questions, give short answers (1-2 sentences). For complex topics, provide comprehensive but concise explanations (2-3 sentences maximum). Always emphasize that information is for educational purposes only and users should consult healthcare professionals for medical advice.`
-             },
-             {
-               role: 'user',
-               content: inputMessage
-             }
-           ],
-           max_tokens: 100,
-           temperature: 0.7
-         })
+        body: JSON.stringify({
+          model: 'meta-llama/Meta-Llama-3-8B-Instruct',
+          messages: [
+            {
+              role: 'system',
+              content: `You are a specialized pancreatic health assistant. Provide concise, clear, and direct answers. Keep responses brief but informative. For simple questions, give short answers (1-2 sentences). For complex topics, provide comprehensive but concise explanations (2-3 sentences maximum). Always emphasize that information is for educational purposes only and users should consult healthcare professionals for medical advice.`
+            },
+            {
+              role: 'user',
+              content: inputMessage
+            }
+          ],
+          max_tokens: 100,
+          temperature: 0.7
+        })
       });
 
       if (response.ok) {
@@ -169,8 +169,8 @@ const PublicChatbot: React.FC = () => {
     <>
              
                <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 bg-blue-500 hover:bg-green-500 hover:border-green-400 text-white rounded-full px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 shadow-lg transition-all duration-300 z-50 flex items-center space-x-1 sm:space-x-2 border border-blue-400 transform hover:scale-105 chatbot-button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 bg-blue-500 hover:bg-green-500 hover:border-green-400 text-white rounded-full px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 shadow-lg transition-all duration-300 z-[60] flex items-center space-x-1 sm:space-x-2 border border-blue-400 transform hover:scale-105 chatbot-button"
           aria-label="Ask AI assistant"
         >
           <img 
@@ -184,7 +184,10 @@ const PublicChatbot: React.FC = () => {
 
              
                {isOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-0 sm:p-4 z-50">
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-0 sm:p-4 z-50"
+            onClick={() => setIsOpen(false)}
+          >
                          <div className="bg-white dark:bg-gray-800 rounded-none sm:rounded-lg shadow-xl w-full h-full sm:w-80 sm:h-96 md:w-96 md:h-[500px] lg:w-[300px] lg:h-[350px] xl:w-[500px] xl:h-[650px] 2xl:w-[550px] 2xl:h-[700px] flex flex-col chatbot-container">
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-2 sm:space-x-3">
@@ -196,12 +199,6 @@ const PublicChatbot: React.FC = () => {
                    <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Pancreatic Health Assistant</p>
                  </div>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1"
-              >
-                <FiX size={20} />
-              </button>
             </div>
               <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 h-[calc(100vh-140px)] sm:h-80 md:h-96 lg:h-[200px] xl:h-[520px] 2xl:h-[580px] chatbot-messages">
                <div className="text-xs text-gray-500 mb-2">
@@ -290,3 +287,5 @@ const PublicChatbot: React.FC = () => {
 };
 
 export default PublicChatbot;
+
+
