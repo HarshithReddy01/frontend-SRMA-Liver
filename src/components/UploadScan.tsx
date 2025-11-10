@@ -27,18 +27,6 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
 
 
 
-  const acceptedTypes = ['.dcm', '.nii', '.nii.gz', '.nrrd'];
-  const acceptedMimeTypes = [
-    'application/dicom',
-    'application/octet-stream',
-    'application/x-nifti',
-    'application/gzip',
-    'application/x-nrrd',
-    'application/nii',
-    'application/nii.gz',
-    'application/nrrd',
-  ];
-
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -48,39 +36,29 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
   };
 
   const validateFile = (file: File): boolean => {
-    const isValidType = acceptedTypes.some(type => 
-      file.name.toLowerCase().endsWith(type)
-    ) || acceptedMimeTypes.includes(file.type);
+    const isValidType = file.name.toLowerCase().endsWith('.nii.gz');
     
     const isValidSize = file.size <= 50 * 1024 * 1024;
     
     return isValidType && isValidSize;
   };
 
-  const createFilePreview = (file: File): Promise<string | undefined> => {
+  const createFilePreview = (): Promise<string | undefined> => {
     return new Promise((resolve) => {
-      if (file.name.toLowerCase().endsWith('.dcm')) {
-        resolve(undefined);
-      } else if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => resolve(e.target?.result as string);
-        reader.readAsDataURL(file);
-      } else {
-        resolve(undefined);
-      }
+      resolve(undefined);
     });
   };
 
   const handleFileSelect = useCallback(async (file: File) => {
     if (!validateFile(file)) {
-      alert('Please select a valid medical image file (.dcm, .nii, .nii.gz, .nrrd) under 50MB.');
+      alert('Please select a valid NIfTI file (.nii.gz format) under 50MB.');
       return;
     }
 
     setIsPulsing(true);
     setTimeout(() => setIsPulsing(false), 1000);
 
-    const preview = await createFilePreview(file);
+    const preview = await createFilePreview();
     setFileInfo({
       file,
       preview,
@@ -140,7 +118,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
       
       
       const sampleReportData = {
-        scanType: fileInfo.file.name.toLowerCase().endsWith('.dcm') ? 'DICOM CT Scan' : 'Medical Image',
+        scanType: 'NIfTI MRI Volume',
         analysisDate: new Date().toLocaleDateString('en-US', { 
           year: 'numeric', 
           month: 'long', 
@@ -150,17 +128,17 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
         }),
         confidence: Math.floor(Math.random() * 30) + 70, // 70-99%
         findings: [
-          "No significant abnormalities detected in the pancreatic region",
-          "Normal pancreatic tissue density and structure observed",
+          "No significant abnormalities detected in the liver region",
+          "Normal liver tissue density and structure observed",
           "Vascular structures appear within normal limits",
           "No evidence of mass lesions or calcifications",
-          "Pancreatic duct appears normal in caliber"
+          "Liver morphology appears normal"
         ],
         recommendations: [
           "Continue routine monitoring as recommended by your healthcare provider",
           "Maintain healthy lifestyle habits including balanced diet and regular exercise",
           "Schedule follow-up imaging in 6-12 months as per standard protocols",
-          "Consider annual screening if you have family history of pancreatic conditions",
+          "Consider annual screening if you have family history of liver conditions",
           "Report any new symptoms to your healthcare provider promptly"
         ],
         riskLevel: 'Low' as const,
@@ -175,7 +153,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
       };
       
     
-      localStorage.setItem('paninsight-report', JSON.stringify(sampleReportData));
+      localStorage.setItem('liverprofile-report', JSON.stringify(sampleReportData));
       navigate('/report', { state: { reportData: sampleReportData } });
       
       if (onAnalyze) {
@@ -215,10 +193,10 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('paninsight-theme', 'dark');
+      localStorage.setItem('liverprofile-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('paninsight-theme', 'light');
+      localStorage.setItem('liverprofile-theme', 'light');
     }
   }, [isDark]);
 
@@ -255,7 +233,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
           
           <div className="max-w-3xl mx-auto">
             <p className="text-xl text-slate-600 dark:text-slate-400 mb-4">
-              Upload your CT/MRI scans for AI-powered analysis with advanced medical imaging technology
+              Upload your 3D NIfTI MRI volumes (.nii.gz) for automatic liver segmentation and morphological analysis using SRMA-Mamba AI architecture
             </p>
             
             <div className="flex flex-wrap justify-center gap-4 mt-6">
@@ -339,10 +317,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                   </button>
                 </p>
                 <div className="flex items-center justify-center space-x-2 text-xs text-slate-500 dark:text-slate-500 mt-4">
-                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">.dcm</span>
-                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">.nii</span>
                   <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">.nii.gz</span>
-                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">.nrrd</span>
                   <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">max 50MB</span>
                 </div>
               </div>
@@ -350,7 +325,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".dcm,.nii,.nii.gz,.nrrd"
+                accept=".nii.gz"
                 onChange={handleFileInputChange}
                 className="hidden"
               />
@@ -413,7 +388,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                           </svg>
                         </div>
                         <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                          {fileInfo.file.name.toLowerCase().endsWith('.dcm') ? 'DICOM' : 'Image'}
+                          NIfTI
                         </p>
                       </div>
                     </div>
@@ -453,7 +428,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                   className="mt-1 h-5 w-5 text-blue-600 dark:text-blue-500 border-slate-300 dark:border-slate-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 transition-all duration-200"
                 />
                 <label htmlFor="consent" className="ml-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                  I give consent to analyze this scan with PanInsight AI. I understand that this analysis is for informational purposes only and should not replace professional medical advice.
+                  I give consent to analyze this scan with LiverProfile AI. I understand that this analysis is for informational purposes only and should not replace professional medical advice.
                 </label>
               </div>
             </div>

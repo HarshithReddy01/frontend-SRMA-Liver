@@ -38,13 +38,13 @@ const HomePage: React.FC = () => {
             <PanInsightLogo size={80} className="drop-shadow-lg" />
           </div>
           <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl">
-            PanInsight
+            LiverProfile AI
           </h1>
           <p className="mt-6 text-xl font-semibold text-slate-700 dark:text-slate-300 sm:text-2xl">
-            AI-Powered Early Detection of Pancreatic Cancer
+            Advanced AI-Powered Liver Segmentation and Analysis
           </p>
           <p className="mt-4 text-lg text-slate-600 dark:text-slate-400 sm:text-xl">
-            Secure, reliable, and clear medical imaging assistance for radiologists and surgeons.
+            Automatic liver segmentation and morphological analysis from 3D MRI volumes using SRMA-Mamba architecture.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center">
             <Link
@@ -106,10 +106,10 @@ const HomePage: React.FC = () => {
                   </svg>
                 </div>
                 <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-3">
-                  AI Analysis
+                  AI Segmentation
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400">
-                  Our advanced AI algorithms analyze the scans for early detection indicators.
+                  Our SRMA-Mamba AI automatically segments liver tissue with 99.09% pixel accuracy.
                 </p>
               </div>
             </div>
@@ -145,7 +145,7 @@ const HomePage: React.FC = () => {
                     AI Health Assistant
                   </h3>
                   <p className="text-slate-600 dark:text-slate-400">
-                    Chat with our AI assistant about pancreatic health questions. Available 24/7!
+                    Chat with our AI assistant about liver health questions. Available 24/7!
                   </p>
                 </div>
               </div>
@@ -157,7 +157,7 @@ const HomePage: React.FC = () => {
       <footer className="bg-slate-900 dark:bg-slate-950 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-sm text-slate-400 dark:text-slate-500">
-            © 2025 PanInsight · Secure · Confidential · Medical-Grade
+            © 2025 LiverProfile AI · Secure · Confidential · Medical-Grade
           </p>
         </div>
       </footer>

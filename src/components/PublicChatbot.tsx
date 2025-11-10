@@ -13,7 +13,7 @@ const PublicChatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([{
     id: '1',
-    text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
+    text: "Hello! I'm LiverProfile AI's assistant, specialized in liver health. I can help you learn about liver anatomy, diseases, symptoms, and treatments. How can I assist you today?",
     isUser: false,
     timestamp: new Date()
   }]);
@@ -55,7 +55,7 @@ const PublicChatbot: React.FC = () => {
           messages: [
             {
               role: 'system',
-              content: `You are a specialized pancreatic health assistant. Provide concise, clear, and direct answers. Keep responses brief but informative. For simple questions, give short answers (1-2 sentences). For complex topics, provide comprehensive but concise explanations (2-3 sentences maximum). Always emphasize that information is for educational purposes only and users should consult healthcare professionals for medical advice.`
+              content: `You are a specialized liver health assistant. Provide concise, clear, and direct answers. Keep responses brief but informative. For simple questions, give short answers (1-2 sentences). For complex topics, provide comprehensive but concise explanations (2-3 sentences maximum). Always emphasize that information is for educational purposes only and users should consult healthcare professionals for medical advice.`
             },
             {
               role: 'user',
@@ -123,7 +123,7 @@ const PublicChatbot: React.FC = () => {
             alt="Pancreas Icon" 
             className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
           />
-          <span className="font-medium text-sm sm:text-base hidden sm:inline">Consult AI</span>
+          <span className="font-medium text-sm sm:text-base hidden sm:inline">Ask Liver AI</span>
           <span className="font-medium text-sm sm:hidden">AI</span>
         </button>
 
@@ -133,15 +133,18 @@ const PublicChatbot: React.FC = () => {
             className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-end p-0 sm:p-4 z-50"
             onClick={() => setIsOpen(false)}
           >
-                         <div className="bg-white dark:bg-gray-800 rounded-none sm:rounded-lg shadow-xl w-full h-full sm:w-80 sm:h-96 md:w-96 md:h-[500px] lg:w-[300px] lg:h-[350px] xl:w-[500px] xl:h-[650px] 2xl:w-[550px] 2xl:h-[700px] flex flex-col chatbot-container">
+                         <div 
+              className="bg-white dark:bg-gray-800 rounded-none sm:rounded-lg shadow-xl w-full h-full sm:w-80 sm:h-96 md:w-96 md:h-[500px] lg:w-[300px] lg:h-[350px] xl:w-[500px] xl:h-[650px] 2xl:w-[550px] 2xl:h-[700px] flex flex-col chatbot-container"
+              onClick={(e) => e.stopPropagation()}
+            >
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center space-x-2 sm:space-x-3">
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-green-600 rounded-full flex items-center justify-center">
                   <FiMessageCircle className="text-white" size={16} />
                 </div>
                                  <div>
-                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base lg:text-lg">PanInsight AI</h3>
-                   <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Pancreatic Health Assistant</p>
+                   <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base lg:text-lg">LiverProfile AI</h3>
+                   <p className="text-xs lg:text-sm text-gray-500 dark:text-gray-400">Liver Health Assistant</p>
                  </div>
               </div>
             </div>
@@ -187,7 +190,7 @@ const PublicChatbot: React.FC = () => {
                    value={inputMessage}
                    onChange={(e) => setInputMessage(e.target.value)}
                    onKeyPress={handleKeyPress}
-                   placeholder="Ask about pancreatic health..."
+                   placeholder="Ask about liver health..."
                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm chatbot-input"
                    disabled={isLoading}
                  />

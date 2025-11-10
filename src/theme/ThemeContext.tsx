@@ -14,17 +14,17 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('paninsight-theme');
+    const savedTheme = localStorage.getItem('liverprofile-theme');
     setIsDark(savedTheme === 'dark');
   }, []);
 
   useEffect(() => {
     if (isDark) {
       document.documentElement.classList.add('dark');
-      localStorage.setItem('paninsight-theme', 'dark');
+      localStorage.setItem('liverprofile-theme', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
-      localStorage.setItem('paninsight-theme', 'light');
+      localStorage.setItem('liverprofile-theme', 'light');
     }
   }, [isDark]);
 

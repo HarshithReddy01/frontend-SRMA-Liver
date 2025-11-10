@@ -1,187 +1,222 @@
-# PanInsight - AI-Powered Early Detection of Pancreatic Cancer
+# 🩺 LiverProfile AI
 
-PanInsight is an advanced medical imaging platform that combines cutting-edge artificial intelligence with user-friendly design to assist in the early detection of pancreatic cancer. Built with privacy, security, and medical precision at its core, this application serves as a valuable tool for healthcare professionals and patients seeking clarity on their diagnostic imaging.
+**Advanced AI-Powered Liver Segmentation and Analysis for Medical Imaging**
 
-Our mission is simple yet profound: to make pancreatic cancer detection more accessible, accurate, and actionable. Pancreatic cancer is notoriously difficult to detect in its early stages because the pancreas is positioned deep within the abdomen, and early-stage tumors are often too small to notice on standard imaging. PanInsight addresses this challenge by leveraging sophisticated AI algorithms developed by medical imaging experts to enhance scan analysis and highlight subtle indicators that might otherwise be missed.
+LiverProfile AI is a state-of-the-art deep learning system designed for automatic liver segmentation and morphological analysis from 3D MRI volumes. Built on the SRMA-Mamba architecture, it provides accurate, real-time liver segmentation with comprehensive medical reporting capabilities.
 
-## What Makes PanInsight Special
+## 📋 Overview
 
-PanInsight isn't just another medical app. It's a thoughtfully designed platform that respects both the technical complexity of medical imaging and the human need for clear, understandable results. We believe that better diagnostic tools can lead to better patient outcomes, and we've built every feature with that principle in mind.
+LiverProfile AI leverages cutting-edge Mamba-based neural networks to automatically identify and segment liver tissue in MRI scans. The system supports both T1-weighted and T2-weighted MRI sequences, making it versatile for various clinical imaging protocols. Beyond segmentation, LiverProfile AI provides detailed morphological analysis including volume calculations, shape metrics, and automated medical reports.
 
-**Privacy First**: Your medical data never leaves your control without explicit consent. All processing happens securely, and we maintain strict data protection standards throughout the entire workflow.
+### What It Does
 
-**Medical Grade**: Our AI models are developed by Dr. Debesh Jha, a specialist in deep learning architectures for medical image analysis, ensuring that the technology meets the rigorous standards required for medical applications.
+- **Automatic Liver Segmentation**: Accurately identifies and segments liver tissue in 3D MRI volumes
+- **Multi-Modality Support**: Works with both T1-weighted and T2-weighted MRI sequences
+- **Morphological Analysis**: Calculates liver volume, surface area, and shape characteristics
+- **Medical Reporting**: Generates comprehensive reports with clinical insights
+- **Interactive Visualization**: Slice-by-slice viewing with segmentation overlays
+- **Export Capabilities**: Download segmentation masks in standard NIfTI format
 
-**User Centered**: Whether you're a radiologist, surgeon, or patient, the interface is designed to be intuitive while providing the depth of information needed for informed decision-making.
+## 🎯 Key Features
 
-## Core Features
+### Core Capabilities
+- ✅ **High Accuracy**: 99.09% pixel accuracy, 75% IoU
+- ✅ **Real-Time Processing**: GPU-accelerated inference with optimized memory management
+- ✅ **3D Volume Support**: Handles full 3D MRI volumes using sliding window inference
+- ✅ **Interactive UI**: User-friendly interface with real-time visualization
+- ✅ **REST API**: Programmatic access via FastAPI for integration into clinical workflows
+- ✅ **Medical Reports**: Automated generation of clinical analysis reports
 
-### Comprehensive Diagnostic Workflow
+### Technical Highlights
+- **Architecture**: Spatial Reverse Mamba Attention (SRMA-Mamba) Network
+- **Optimization**: Dynamic memory management for various GPU configurations
+- **Performance**: Optimized for L40S (48GB), A100, and other high-VRAM GPUs
+- **Format Support**: Standard NIfTI (.nii.gz) input/output
 
-**Smart Upload System**
-The application accepts multiple medical imaging formats including DICOM (.dcm), NIfTI (.nii, .nii.gz), and NRRD (.nrrd) files up to 50MB. The drag-and-drop interface works seamlessly across desktop and mobile devices, with built-in file validation to ensure only appropriate medical imaging files are processed. Before any analysis begins, users must provide explicit consent, ensuring complete transparency about how their data will be used.
+## 📊 Model Performance
 
-**Advanced Image Viewer**
-Our medical image viewer goes beyond simple display. It provides professional-grade tools including precise zoom controls, rotation capabilities, and adjustable contrast and brightness settings. The viewer supports panning for detailed examination of specific regions and includes keyboard shortcuts for efficient navigation. All image adjustments happen locally in your browser, ensuring your original scan remains untouched while allowing for enhanced visualization.
+| Metric | Value |
+|--------|-------|
+| **Pixel Accuracy** | 99.09% |
+| **IoU (Intersection over Union)** | 75% |
+| **PSNR** | 29.64 dB |
+| **SSIM** | 0.24 |
 
-**AI-Powered Analysis**
-The heart of PanInsight lies in its sophisticated AI analysis engine. Built on advanced deep learning models specifically trained for pancreatic cancer detection, the system analyzes uploaded scans to identify potential areas of concern. The AI provides confidence scores, detailed findings, and highlights regions that warrant further medical attention.
+## 🚀 Quick Start
 
-**Comprehensive Reporting**
-Analysis results are presented through an intuitive tabbed interface that organizes information into four key sections:
+### Using the Web Interface
 
-- **Overview**: Displays scan type, analysis date, confidence levels, and overall risk assessment with color-coded indicators
-- **AI Findings**: Detailed technical analysis results with numbered findings for easy reference
-- **Recommendations**: Actionable medical recommendations based on the analysis results
-- **Next Steps**: Clear timeline and follow-up instructions for patients and healthcare providers
+1. **Upload** a 3D NIfTI MRI volume (`.nii.gz` format)
+2. **Select** the MRI modality (T1 or T2)
+3. **Click** "Segment Liver" to run inference
+4. **View** the segmentation overlay and medical report
+5. **Download** the 3D segmentation mask
 
-Reports can be printed directly from the browser or downloaded as professional PDF documents that include all analysis details, recommendations, and proper medical disclaimers.
+### Using the API
 
-### User Authentication and Security
+```python
+import requests
 
-**Flexible Authentication Options**
-PanInsight supports both traditional email-based registration and Google OAuth2 authentication, providing users with secure and convenient access options. The authentication system includes email verification, password reset functionality, and two-factor authentication support for enhanced security.
+# Upload and segment
+with open('liver_scan.nii.gz', 'rb') as f:
+    response = requests.post(
+        'https://your-api-url/api/segment',
+        files={'file': f},
+        data={'modality': 'T1'}
+    )
+    
+result = response.json()
+# Access segmentation file, volume, and report
+```
 
-**Secure Session Management**
-All user sessions are managed securely with proper logout functionality that clears both client-side and server-side session data. The system maintains user preferences including theme settings and provides personalized welcome messages upon login.
+## 📁 Supported Formats
 
-### Interactive Health Assistant
+- **Input**: NIfTI format (`.nii.gz`, `.nii`)
+- **Output**: NIfTI binary segmentation mask (`.nii.gz`)
+- **Modalities**: T1-weighted MRI, T2-weighted MRI
 
-**Specialized Medical Chatbot**
-Our AI-powered health assistant specializes exclusively in pancreatic health topics. Built using the Mixtral-8x7B-Instruct model through DeepInfra API, the chatbot provides educational information about pancreatic anatomy, diseases, symptoms, and treatments. The assistant maintains strict domain focus, politely redirecting off-topic questions back to pancreatic health while always emphasizing that its responses are for educational purposes only.
+## 🔧 Installation
 
-**Real-Time Communication**
-The chatbot features a modern, responsive interface with real-time messaging, typing indicators, and conversation history within each session. It's designed to complement the diagnostic workflow by providing additional context and educational support.
+### Requirements
 
-### Responsive Design and Accessibility
+- Python 3.10+
+- CUDA-capable GPU (recommended: 24GB+ VRAM for optimal performance)
+- PyTorch 2.0+
+- MONAI
+- React 18+ with TypeScript
 
-**Universal Compatibility**
-PanInsight works flawlessly across all devices and screen sizes. The responsive design ensures that whether you're using a smartphone, tablet, laptop, or desktop computer, you'll have access to all features with an optimized user experience.
+### Setup
 
-**Dark Mode Support**
-The application includes a comprehensive dark mode implementation that extends throughout the entire interface, including the medical image viewer and reporting sections. Users can toggle between light and dark themes, with their preference saved across sessions.
+```bash
+# Clone the repository
+git clone https://github.com/HarshithReddy01/frontend-SRMA-Liver.git
 
-**Professional Visual Design**
-The interface employs a clean, medical-grade aesthetic with carefully chosen colors, typography, and spacing that reduces eye strain during extended use while maintaining the professional appearance expected in medical applications.
+# Install dependencies
+npm install
 
-## Technical Architecture
+# Run the application
+npm run dev
+```
 
-### Frontend Technology Stack
+## 🏗️ Architecture
 
-**React with TypeScript**: The application is built using React 18 with TypeScript for type safety and maintainable code. The component architecture is modular and reusable, making it easy to extend and maintain.
+LiverProfile AI is built on the **SRMA-Mamba** (Spatial Reverse Mamba Attention) architecture, which combines:
 
-**Tailwind CSS**: For styling, we use Tailwind CSS which provides a utility-first approach that ensures consistent design while allowing for rapid development and easy customization.
+- **Mamba-based Encoder**: Efficient state-space models for long-range dependencies
+- **Spatial Reverse Attention**: Captures multi-scale spatial features
+- **Multi-Resolution Processing**: Handles various volume sizes through sliding window inference
+- **Attention Mechanisms**: Multi-head attention for feature refinement
 
-**Advanced State Management**: The application uses React Context for theme management and local state for component-specific data, ensuring efficient performance and predictable state updates.
+### Processing Pipeline
 
-**Routing and Navigation**: React Router DOM handles all navigation with proper route guards and authentication checks, ensuring users can only access appropriate sections based on their authentication status.
+1. **Preprocessing**: Normalization and intensity adjustment
+2. **Sliding Window Inference**: Processes large volumes in overlapping windows
+3. **Post-processing**: Morphological operations and mask refinement
+4. **Analysis**: Volume calculation and shape metrics
+5. **Report Generation**: Automated clinical report creation
 
-### Backend Integration
+## 💻 API Documentation
 
-**RESTful API Architecture**: The frontend communicates with backend services through well-defined REST APIs for authentication, file upload, AI analysis, and chatbot functionality.
+### Endpoints
 
-**Secure File Handling**: File uploads are processed securely with proper validation, size limits, and type checking to ensure only appropriate medical imaging files are accepted.
+#### `POST /api/segment`
+Upload a NIfTI file for liver segmentation.
 
-**AI Model Integration**: The system is designed to integrate with AI models developed by Dr. Debesh Jha, with proper error handling and fallback mechanisms to ensure reliability.
+**Parameters:**
+- `file`: NIfTI file (multipart/form-data)
+- `modality`: "T1" or "T2" (default: "T1")
+- `slice_idx`: Optional slice index for visualization
 
-### Security and Privacy
+**Response:**
+```json
+{
+  "success": true,
+  "volume_ml": 1234.56,
+  "segmentation_path": "/path/to/mask.nii.gz",
+  "report": "Medical report text...",
+  "segmentation_file": "base64_encoded_file"
+}
+```
 
-**Data Protection**: All user data is handled according to strict privacy standards with encryption in transit and proper session management.
+#### `GET /api/health`
+Check API health and model status.
 
-**Consent Management**: Every analysis requires explicit user consent, and users maintain control over their data throughout the entire process.
+**Response:**
+```json
+{
+  "status": "healthy",
+  "device": "cuda",
+  "model_t1_loaded": true,
+  "model_t2_loaded": true
+}
+```
 
-**Medical Disclaimers**: Appropriate medical disclaimers are prominently displayed to ensure users understand the educational nature of the AI analysis and the importance of professional medical consultation.
+### Interactive API Docs
 
-## Deployment and Infrastructure
+Visit `/docs` for Swagger UI documentation.
 
-### Production Deployment
+## ⚙️ System Requirements
 
-**Backend Services**: The application backend is deployed on Amazon EC2 using Docker containers, ensuring consistent deployment across environments and easy scaling capabilities. The Docker setup includes all necessary dependencies and configurations for reliable operation.
+### Recommended Hardware
 
-**Frontend Hosting**: The React frontend is deployed on GitHub Pages, providing fast global content delivery and seamless integration with our development workflow. The frontend communicates with the EC2-hosted backend services through secure API endpoints.
+| GPU | VRAM | Status | Performance |
+|-----|------|--------|-------------|
+| **Nvidia L40S** | 48 GB | ✅ Optimal | Best performance, large batch sizes |
+| **Nvidia A100** | 40-80 GB | ✅ Excellent | Production-ready |
+| **Nvidia L4** | 24 GB | ⚠️ Minimum | Works with reduced settings |
+| **Nvidia T4** | 16 GB | ⚠️ Limited | May require minimal settings |
 
-**Domain and Access**: Users can access the application through the GitHub Pages URL, which provides a clean and professional interface while maintaining secure communication with the backend services.
+### Software Requirements
 
-### Development and CI/CD
+- Python 3.10+
+- CUDA 11.8+ (for GPU acceleration)
+- 8GB+ RAM
+- 10GB+ disk space for models and dependencies
 
-**Version Control**: All code is managed through Git with GitHub as the primary repository, enabling collaborative development and version tracking.
+## 📈 Performance Optimization
 
-**Automated Deployment**: The deployment process is automated to ensure consistent updates and minimal downtime during releases.
+The system automatically optimizes based on available GPU memory:
 
-## Team and Development
+- **High VRAM (>30GB)**: `roi_size=[256, 256, 96]`, `batch_size=4`
+- **Medium VRAM (15-30GB)**: `roi_size=[256, 256, 64]`, `batch_size=2`
+- **Low VRAM (<15GB)**: `roi_size=[192, 192, 32]`, `batch_size=1`
 
-### Our Expert Team
+Memory management includes automatic fallback to minimal settings if OOM errors occur.
 
-**Dr. Debesh Jha - Technical Lead**
-Ph.D. in Computer Science with specialization in deep learning architectures for medical image analysis. Dr. Jha leads the AI model development and ensures the technical accuracy of our diagnostic algorithms.
+## 📚 Citation
 
-**Harshith Reddy Nalla - Full-Stack Developer**
-Responsible for the complete application architecture, frontend development, user experience design, and system integration. Ensures the platform is both technically robust and user-friendly.
+If you use LiverProfile AI in your research, please cite:
 
-**Sai Sankar Swarna - Backend & MLOps**
-Manages backend services, API development, and machine learning operations workflows. Ensures scalable and reliable infrastructure for AI model deployment and data processing.
+```bibtex
+@article{zeng2025srma,
+  title={SRMA-Mamba: Spatial Reverse Mamba Attention Network for Pathological Liver Segmentation in MRI Volumes},
+  author={Zeng, Jun and Huang, Yannan and Keles, Elif and Aktas, Halil Ertugrul and Durak, Gorkem and Tomar, Nikhil Kumar and Trinh, Quoc-Huy and Nayak, Deepak Ranjan and Bagci, Ulas and Jha, Debesh},
+  journal={arXiv preprint arXiv:2508.12410},
+  year={2025}
+}
+```
 
-### Development Philosophy
+## ⚠️ Disclaimer
 
-Our development approach prioritizes user safety, data privacy, and medical accuracy above all else. Every feature is thoroughly tested, and we maintain strict coding standards to ensure reliability in a medical context. We believe in transparency, which is why we're open about our methods, limitations, and the educational nature of our AI analysis.
+**Important**: This software is intended for **research purposes only**. It is not approved for clinical use or diagnostic purposes without proper validation and regulatory approval. Always consult with qualified medical professionals for clinical decision-making.
 
-## Getting Started
+## 🤝 Contributing
 
-### For Healthcare Professionals
+Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
 
-1. **Registration**: Create an account using email or Google authentication
-2. **Upload**: Securely upload medical imaging files in supported formats
-3. **Analysis**: Review AI-generated analysis with confidence scores and detailed findings
-4. **Reporting**: Generate comprehensive reports for patient records and consultation
-5. **Follow-up**: Use provided recommendations and timelines for patient care planning
+## 📧 Contact
 
-### For Patients
+For questions, support, or collaboration inquiries:
 
-1. **Consultation**: Ensure you have proper authorization to upload your medical imaging
-2. **Upload**: Upload your scan files with the provided consent acknowledgment
-3. **Review**: Examine the analysis results in the user-friendly report format
-4. **Consultation**: Share the generated report with your healthcare provider
-5. **Follow-up**: Follow the recommended next steps and timeline for continued care
+- **Email**: harshithreddy0117@gmail.com
+- **Hugging Face Space**: [srmamamba-liver-segmentation](https://huggingface.co/spaces/HarshithReddy01/srmamamba-liver-segmentation)
 
-## Technology Stack
+## 📄 License
 
-- **Frontend Framework**: React 18 with TypeScript
-- **Styling**: Tailwind CSS with responsive design
-- **State Management**: React Context API
-- **Routing**: React Router DOM
-- **PDF Generation**: jsPDF with autoTable
-- **Icons**: React Icons library
-- **Development**: Vite build tool
-- **Frontend Deployment**: GitHub Pages
-- **Backend Deployment**: Amazon EC2 with Docker
-- **Containerization**: Docker
-
-## Contributing and Contact
-
-PanInsight is developed with the goal of improving pancreatic cancer detection outcomes. If you're a healthcare professional, researcher, or developer interested in contributing to this mission, we welcome your input and collaboration.
-
-For more information about our project, technical details, or potential partnerships, please visit our contact page or reach out to our development team.
-
-### Contact Our Team
-
-**Dr. Debesh Jha - Technical Lead**
-- Website: [https://debeshjha.com/](https://debeshjha.com/)
-- Research Focus: Deep learning architectures for medical image analysis, AI-driven diagnostics.
-
-**Harshith Reddy Nalla - Full-Stack Developer**
-- Portfolio: [https://harshithreddy01.github.io/My-Web/](https://harshithreddy01.github.io/My-Web/)
-- Expertise: Application architecture, Backenend Devlopment, frontend development, user experience design.
-
-**Sai Sankar Swarna - Backend & MLOps**
-- LinkedIn: [https://www.linkedin.com/in/swanra-sai-sankar-000797191/](https://www.linkedin.com/in/swanra-sai-sankar-000797191/)
-- Specialization: Backend services, API development, machine learning operations.
-
-## License and Legal
-
-**Medical Disclaimer**: PanInsight is designed as an educational and assistive tool. All analysis results should be reviewed by qualified healthcare professionals. This application is not intended to replace professional medical diagnosis, treatment, or advice. Always consult with healthcare providers for medical decisions.
-
-**Privacy Commitment**: We are committed to protecting user privacy and maintaining the highest standards of data security. Your medical information is handled with the utmost care and in accordance with applicable privacy regulations.
+This project is provided for research and educational purposes. Please refer to the original SRMA-Mamba paper for licensing details.
 
 ---
 
-*PanInsight – Where AI meets medical expertise to provide clarity when it matters most, bringing comfort in uncertainty and contributing to a healthier, better society.*
+**LiverProfile AI** - *Empowering Medical Imaging with AI*
+
+*Built with ❤️ for the medical imaging community*

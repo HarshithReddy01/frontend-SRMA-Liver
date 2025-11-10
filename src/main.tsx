@@ -11,7 +11,6 @@ import './index.css'
 import { ThemeProvider } from './theme/ThemeContext'
 import { initializeTaskbarDetection } from './utils/taskbarUtils'
 
-// Initialize taskbar detection to prevent overlap issues
 initializeTaskbarDetection();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

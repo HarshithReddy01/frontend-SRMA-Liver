@@ -39,7 +39,7 @@ const OurProjectPage: React.FC = () => {
           <section className="mb-12 bg-slate-800/90 rounded-2xl shadow-xl p-4 sm:p-8 border border-slate-600/50">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6 text-center">About Us</h2>
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-              At <span className="font-semibold text-blue-300">PanInsight</span>, we're focused on one goal, helping detect pancreatic cancer early, when it matters most. This type of cancer is hard to spot because the pancreas is buried deep in the body and early tumors are often small and easy to miss. Our AI system is built to tackle that. It enhances medical images, highlights subtle signs of cancer, and reduces motion blur caused by breathing or heartbeat. We work closely with radiologists and surgeons to give them clearer, more reliable images so they can make faster, more confident decisions. Behind everything we do is a belief that better tools can lead to better outcomes.
+              At <span className="font-semibold text-blue-300">LiverProfile AI</span>, we're focused on one goal: providing accurate, real-time liver segmentation and morphological analysis from 3D MRI volumes. Liver segmentation is crucial for diagnosis, treatment planning, and monitoring of liver diseases. Our AI system leverages the cutting-edge SRMA-Mamba architecture to automatically identify and segment liver tissue with 99.09% pixel accuracy and 75% IoU. The system supports both T1-weighted and T2-weighted MRI sequences, making it versatile for various clinical imaging protocols. Beyond segmentation, LiverProfile AI provides detailed morphological analysis including volume calculations, shape metrics, and automated medical reports. We work closely with radiologists and surgeons to give them clearer, more reliable liver segmentation results so they can make faster, more confident decisions. Behind everything we do is a belief that better tools can lead to better outcomes.
             </p>
           </section>
 
@@ -54,8 +54,6 @@ const OurProjectPage: React.FC = () => {
                   <p className="text-slate-400 text-xs sm:text-sm mb-2 text-center">Ph.D. in Computer Science</p>
                   <p className="text-slate-400 text-center text-xs sm:text-sm">Specializes in deep learning architectures for medical image analysis.</p>
                 </div>
- 
-                {/* Me */}
                
                 <div className="bg-slate-800/90 rounded-2xl shadow-lg p-4 sm:p-8 border border-slate-600/50 flex flex-col items-center">
                   <img src={meImage} alt="Harshith Reddy Nalla" className="w-24 h-24 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-pink-700 shadow-md mb-4" />
@@ -90,7 +88,7 @@ const OurProjectPage: React.FC = () => {
         <footer className="bg-slate-950/90 px-4 py-6 sm:py-8 rounded-t-2xl shadow-inner mt-8">
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-xs sm:text-sm text-slate-500">
-              © 2025 PanInsight · Secure · Confidential · Medical-Grade
+              © 2025 LiverProfile AI · Secure · Confidential · Medical-Grade
             </p>
           </div>
         </footer>

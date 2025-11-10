@@ -72,7 +72,7 @@ const ContactPage: React.FC = () => {
         <main className="max-w-4xl mx-auto px-4 py-12">
     
           <section className="mb-8">
-            <h2 className="text-3xl font-bold text-white mb-8 text-center">Contact PanInsight</h2>
+            <h2 className="text-3xl font-bold text-white mb-8 text-center">Contact LiverProfile AI</h2>
             <p className="text-lg text-slate-300 text-center mb-8">
               We'd love to hear from you! Reach out with any inquiries, collaboration opportunities, or to report a problem.
             </p>
@@ -160,7 +160,7 @@ const ContactPage: React.FC = () => {
         <footer className="bg-slate-950/90 px-4 py-8 rounded-t-2xl shadow-inner mt-8">
           <div className="mx-auto max-w-4xl text-center">
             <p className="text-sm text-slate-500">
-              © 2025 PanInsight · Secure · Confidential · Medical-Grade
+              © 2025 LiverProfile AI · Secure · Confidential · Medical-Grade
             </p>
           </div>
         </footer>
