@@ -1,10 +1,10 @@
-# 🩺 LiverProfile AI
+# LiverProfile AI
 
 **Advanced AI-Powered Liver Segmentation and Analysis for Medical Imaging**
 
 LiverProfile AI is a state-of-the-art deep learning system designed for automatic liver segmentation and morphological analysis from 3D MRI volumes. Built on the SRMA-Mamba architecture, it provides accurate, real-time liver segmentation with comprehensive medical reporting capabilities.
 
-## 📋 Overview
+## Overview
 
 LiverProfile AI leverages cutting-edge Mamba-based neural networks to automatically identify and segment liver tissue in MRI scans. The system supports both T1-weighted and T2-weighted MRI sequences, making it versatile for various clinical imaging protocols. Beyond segmentation, LiverProfile AI provides detailed morphological analysis including volume calculations, shape metrics, and automated medical reports.
 
@@ -17,15 +17,15 @@ LiverProfile AI leverages cutting-edge Mamba-based neural networks to automatica
 - **Interactive Visualization**: Slice-by-slice viewing with segmentation overlays
 - **Export Capabilities**: Download segmentation masks in standard NIfTI format
 
-## 🎯 Key Features
+## Key Features
 
 ### Core Capabilities
-- ✅ **High Accuracy**: 99.09% pixel accuracy, 75% IoU
-- ✅ **Real-Time Processing**: GPU-accelerated inference with optimized memory management
-- ✅ **3D Volume Support**: Handles full 3D MRI volumes using sliding window inference
-- ✅ **Interactive UI**: User-friendly interface with real-time visualization
-- ✅ **REST API**: Programmatic access via FastAPI for integration into clinical workflows
-- ✅ **Medical Reports**: Automated generation of clinical analysis reports
+- **High Accuracy**: 99.09% pixel accuracy, 75% IoU
+- **Real-Time Processing**: GPU-accelerated inference with optimized memory management
+- **3D Volume Support**: Handles full 3D MRI volumes using sliding window inference
+- **Interactive UI**: User-friendly interface with real-time visualization
+- **REST API**: Programmatic access via FastAPI for integration into clinical workflows
+- **Medical Reports**: Automated generation of clinical analysis reports
 
 ### Technical Highlights
 - **Architecture**: Spatial Reverse Mamba Attention (SRMA-Mamba) Network
@@ -33,7 +33,7 @@ LiverProfile AI leverages cutting-edge Mamba-based neural networks to automatica
 - **Performance**: Optimized for L40S (48GB), A100, and other high-VRAM GPUs
 - **Format Support**: Standard NIfTI (.nii.gz) input/output
 
-## 📊 Model Performance
+## Model Performance
 
 | Metric | Value |
 |--------|-------|
@@ -42,7 +42,7 @@ LiverProfile AI leverages cutting-edge Mamba-based neural networks to automatica
 | **PSNR** | 29.64 dB |
 | **SSIM** | 0.24 |
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Using the Web Interface
 
@@ -69,13 +69,13 @@ result = response.json()
 # Access segmentation file, volume, and report
 ```
 
-## 📁 Supported Formats
+## Supported Formats
 
 - **Input**: NIfTI format (`.nii.gz`, `.nii`)
 - **Output**: NIfTI binary segmentation mask (`.nii.gz`)
 - **Modalities**: T1-weighted MRI, T2-weighted MRI
 
-## 🔧 Installation
+## Installation
 
 ### Requirements
 
@@ -98,7 +98,7 @@ npm install
 npm run dev
 ```
 
-## 🏗️ Architecture
+## Architecture
 
 LiverProfile AI is built on the **SRMA-Mamba** (Spatial Reverse Mamba Attention) architecture, which combines:
 
@@ -115,7 +115,7 @@ LiverProfile AI is built on the **SRMA-Mamba** (Spatial Reverse Mamba Attention)
 4. **Analysis**: Volume calculation and shape metrics
 5. **Report Generation**: Automated clinical report creation
 
-## 💻 API Documentation
+## API Documentation
 
 ### Endpoints
 
@@ -155,16 +155,16 @@ Check API health and model status.
 
 Visit `/docs` for Swagger UI documentation.
 
-## ⚙️ System Requirements
+## System Requirements
 
 ### Recommended Hardware
 
 | GPU | VRAM | Status | Performance |
 |-----|------|--------|-------------|
-| **Nvidia L40S** | 48 GB | ✅ Optimal | Best performance, large batch sizes |
-| **Nvidia A100** | 40-80 GB | ✅ Excellent | Production-ready |
-| **Nvidia L4** | 24 GB | ⚠️ Minimum | Works with reduced settings |
-| **Nvidia T4** | 16 GB | ⚠️ Limited | May require minimal settings |
+| **Nvidia L40S** | 48 GB | Optimal | Best performance, large batch sizes |
+| **Nvidia A100** | 40-80 GB | Excellent | Production-ready |
+| **Nvidia L4** | 24 GB | Minimum | Works with reduced settings |
+| **Nvidia T4** | 16 GB | Limited | May require minimal settings |
 
 ### Software Requirements
 
@@ -173,7 +173,7 @@ Visit `/docs` for Swagger UI documentation.
 - 8GB+ RAM
 - 10GB+ disk space for models and dependencies
 
-## 📈 Performance Optimization
+## Performance Optimization
 
 The system automatically optimizes based on available GPU memory:
 
@@ -183,7 +183,7 @@ The system automatically optimizes based on available GPU memory:
 
 Memory management includes automatic fallback to minimal settings if OOM errors occur.
 
-## 📚 Citation
+## Citation
 
 If you use LiverProfile AI in your research, please cite:
 
@@ -196,22 +196,22 @@ If you use LiverProfile AI in your research, please cite:
 }
 ```
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 **Important**: This software is intended for **research purposes only**. It is not approved for clinical use or diagnostic purposes without proper validation and regulatory approval. Always consult with qualified medical professionals for clinical decision-making.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit issues, feature requests, or pull requests.
 
-## 📧 Contact
+## Contact
 
 For questions, support, or collaboration inquiries:
 
 - **Email**: harshithreddy0117@gmail.com
 - **Hugging Face Space**: [srmamamba-liver-segmentation](https://huggingface.co/spaces/HarshithReddy01/srmamamba-liver-segmentation)
 
-## 📄 License
+## License
 
 This project is provided for research and educational purposes. Please refer to the original SRMA-Mamba paper for licensing details.
 
@@ -219,4 +219,4 @@ This project is provided for research and educational purposes. Please refer to 
 
 **LiverProfile AI** - *Empowering Medical Imaging with AI*
 
-*Built with ❤️ for the medical imaging community*
+*Built for the medical imaging community*
