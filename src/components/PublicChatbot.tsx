@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiMessageCircle, FiLock, FiSend } from 'react-icons/fi';
-import { isAuthenticated } from '../utils/authUtils';
-import { useNavigate } from 'react-router-dom';
+import { FiMessageCircle, FiSend } from 'react-icons/fi';
 import pancreasIcon from '../assets/pancreas-icon.png';
 
 interface Message {
@@ -12,57 +10,16 @@ interface Message {
 }
 
 const PublicChatbot: React.FC = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([{
+    id: '1',
+    text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
+    isUser: false,
+    timestamp: new Date()
+  }]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const authStatus = isAuthenticated();
-    console.log('PublicChatbot - Auth status:', authStatus);
-    setIsLoggedIn(authStatus);
-    
-    if (authStatus && messages.length === 0) {
-      setMessages([{
-        id: '1',
-        text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
-        isUser: false,
-        timestamp: new Date()
-      }]);
-    }
-  }, [isOpen, messages.length]);
-
-  
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const authStatus = isAuthenticated();
-      setIsLoggedIn(authStatus);
-      
-      if (!authStatus) {
-        
-        setMessages([]);
-      } else if (authStatus && messages.length === 0) {
-        
-        setMessages([{
-          id: '1',
-          text: "Hello! I'm PanInsight's AI assistant, specialized in pancreatic health. I can help you learn about pancreatic anatomy, diseases, symptoms, and treatments. How can I assist you today?",
-          isUser: false,
-          timestamp: new Date()
-        }]);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('focus', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('focus', handleStorageChange);
-    };
-  }, [messages.length]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -74,18 +31,6 @@ const PublicChatbot: React.FC = () => {
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
-
-    console.log('PublicChatbot - Sending message, isLoggedIn:', isLoggedIn);
-    if (!isLoggedIn) {
-      const loginMessage: Message = {
-        id: Date.now().toString(),
-        text: "Please log in to your PanInsight account to access the AI health assistant. The chatbot is only available for authenticated users.",
-        isUser: false,
-        timestamp: new Date()
-      };
-      setMessages((prev: Message[]) => [...prev, loginMessage]);
-      return;
-    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -201,30 +146,6 @@ const PublicChatbot: React.FC = () => {
               </div>
             </div>
               <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 h-[calc(100vh-140px)] sm:h-80 md:h-96 lg:h-[200px] xl:h-[520px] 2xl:h-[580px] chatbot-messages">
-               <div className="text-xs text-gray-500 mb-2">
-                 
-               </div>
-               
-                               {!isLoggedIn && messages.length === 0 && (
-                  <div className="flex flex-col items-center justify-center h-full text-center">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-2 sm:mb-3">
-                      <FiLock className="text-gray-500 dark:text-gray-400" size={16} />
-                    </div>
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white mb-1 sm:mb-2">
-                      Login Required
-                    </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-3 px-2 sm:px-4">
-                      Please log in to your PanInsight account to access the AI health assistant.
-                    </p>
-                    <button
-                      onClick={() => navigate('/login')}
-                      className="px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs sm:text-sm"
-                    >
-                      Go to Login
-                    </button>
-                  </div>
-                )}
-              
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -266,13 +187,13 @@ const PublicChatbot: React.FC = () => {
                    value={inputMessage}
                    onChange={(e) => setInputMessage(e.target.value)}
                    onKeyPress={handleKeyPress}
-                   placeholder={isLoggedIn ? "Ask about pancreatic health..." : "Login required to chat"}
+                   placeholder="Ask about pancreatic health..."
                    className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-sm chatbot-input"
-                   disabled={isLoading || !isLoggedIn}
+                   disabled={isLoading}
                  />
                  <button
                    onClick={handleSendMessage}
-                   disabled={!inputMessage.trim() || isLoading || !isLoggedIn}
+                   disabled={!inputMessage.trim() || isLoading}
                    className="px-3 py-2 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                  >
                    <FiSend size={16} />

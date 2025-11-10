@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import backgroundImage from '../assets/background.jpg';
-import { requireAuth } from '../utils/authUtils';
 
 const ContactPage: React.FC = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -63,16 +61,12 @@ const ContactPage: React.FC = () => {
             Back to Home
           </Link>
           <div className="flex items-center gap-4">
-            <button
-              onClick={() => {
-                if (requireAuth(navigate)) {
-                  navigate('/upload');
-                }
-              }}
+            <Link
+              to="/upload"
               className="inline-flex items-center rounded-lg bg-blue-500 px-6 py-2 text-base font-semibold text-white shadow-md hover:bg-blue-600 transition-all duration-200"
             >
               Start Diagnosis
-            </button>
+            </Link>
           </div>
         </header>
         <main className="max-w-4xl mx-auto px-4 py-12">

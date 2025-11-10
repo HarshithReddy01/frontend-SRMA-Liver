@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { ThemeContext } from '../theme/ThemeContext';
 import pancreasIcon from '../assets/pancreas-icon.png';
-import { isAuthenticated, checkAuthWithBackend } from '../utils/authUtils';
-import { useNavigate } from 'react-router-dom';
 import { API_ENDPOINTS } from '../config/api';
 
 interface ChatMessage {
@@ -14,7 +12,6 @@ interface ChatMessage {
 
 const PancreaticChatbot: React.FC = () => {
   const { isDark } = useContext(ThemeContext);
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId] = useState(() => 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9));
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -44,45 +41,9 @@ const PancreaticChatbot: React.FC = () => {
     }
   }, [isOpen]);
 
-  
-  useEffect(() => {
-    const handleStorageChange = () => {
-      if (!isAuthenticated() && isOpen) {
-        setIsOpen(false);
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    
-    if (!isAuthenticated() && isOpen) {
-      setIsOpen(false);
-    }
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, [isOpen]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
-
-    
-    const localAuthStatus = isAuthenticated();
-    
-    if (!localAuthStatus) {
-      setIsOpen(false);
-      navigate('/login');
-      return;
-    }
-    
-    const backendAuthStatus = await checkAuthWithBackend();
-    
-    if (!backendAuthStatus) {
-      setIsOpen(false);
-      navigate('/login');
-      return;
-    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -109,22 +70,6 @@ const PancreaticChatbot: React.FC = () => {
       });
 
       const data = await response.json();
-
-      if (response.status === 401) {
-        
-        const errorMessage: ChatMessage = {
-          id: (Date.now() + 1).toString(),
-          message: "Please log in to continue using the chatbot. Redirecting to login page...",
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          isUserMessage: false
-        };
-        setMessages(prev => [...prev, errorMessage]);
-        setTimeout(() => {
-          setIsOpen(false);
-          navigate('/login');
-        }, 2000);
-        return;
-      }
 
       if (data.reply) {
         const botMessage: ChatMessage = {
@@ -161,60 +106,39 @@ const PancreaticChatbot: React.FC = () => {
 
   return (
     <>
-    
-      {isAuthenticated() && (
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 z-50 group items-center gap-2 px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 border-2 chatbot-button ${isOpen ? 'hidden sm:flex' : 'flex'} ${
-            isOpen
-              ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
-              : isDark 
-                ? 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/30' 
-                : 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/40'
-          }`}
-          aria-label="Toggle chatbot"
-        >
-        {isOpen ? (
-          <>
-            <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span className="hidden md:inline text-sm font-semibold whitespace-nowrap">Close Chat</span>
-          </>
-        ) : (
-          <>
-            <img 
-              src={pancreasIcon} 
-              alt="Pancreas Icon" 
-              className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
-            />
-            <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">
-               {isAuthenticated() ? 'Consult AI' : 'Login to chat with AI'}
-             </span>
-          </>
-        )}
-      </button>
-      )}
-
-      {!isAuthenticated() && (
-        <button
-          onClick={() => navigate('/login')}
-          className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 z-50 group items-center gap-2 px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 border-2 flex chatbot-button ${
-            isDark 
-              ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-transparent shadow-blue-500/30' 
-              : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white border-transparent shadow-blue-500/40'
-          }`}
-          aria-label="Login to access chatbot"
-        >
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-6 xl:bottom-12 xl:right-12 z-50 group items-center gap-2 px-3 py-3 sm:px-4 sm:py-3 md:px-6 md:py-4 rounded-full shadow-xl transition-all duration-300 transform hover:scale-105 border-2 chatbot-button ${isOpen ? 'hidden sm:flex' : 'flex'} ${
+          isOpen
+            ? 'bg-green-400 hover:bg-green-500 text-white border-green-300 shadow-green-400/40'
+            : isDark 
+              ? 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/30' 
+              : 'bg-gradient-to-r from-blue-500 to-blue-500 hover:from-green-600 hover:to-green-600 text-white border-transparent shadow-blue-500/40'
+        }`}
+        aria-label="Toggle chatbot"
+      >
+      {isOpen ? (
+        <>
           <svg className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-          <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">Login to chat with AI</span>
-        </button>
+          <span className="hidden md:inline text-sm font-semibold whitespace-nowrap">Close Chat</span>
+        </>
+      ) : (
+        <>
+          <img 
+            src={pancreasIcon} 
+            alt="Pancreas Icon" 
+            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+          />
+          <span className="hidden sm:inline text-sm font-semibold whitespace-nowrap">
+            Consult AI
+          </span>
+        </>
       )}
+    </button>
 
-      
-       {isAuthenticated() && isOpen && (
+      {isOpen && (
                    <div className={`fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-4 md:bottom-16 md:right-6 lg:bottom-24 lg:right-6 xl:bottom-20 xl:right-12 z-40 w-full h-full sm:w-80 sm:h-96 md:w-96 md:h-[500px] lg:w-[300px] lg:h-[350px] xl:w-[500px] xl:h-[650px] 2xl:w-[550px] 2xl:h-[700px] rounded-none sm:rounded-2xl shadow-2xl border transition-all duration-300 chatbot-container ${
            isDark 
              ? 'bg-slate-800 border-slate-600' 

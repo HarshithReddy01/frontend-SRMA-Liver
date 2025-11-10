@@ -1,22 +1,12 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import PublicChatbot from './PublicChatbot';
 
 const AppLayout: React.FC = () => {
-  const location = useLocation();
-  
-  const isAuthPage = location.pathname === '/login' || 
-                    location.pathname === '/register' || 
-                    location.pathname === '/verify-email' ||
-                    location.pathname === '/forgot-password' ||
-                    location.pathname === '/reset-password' ||
-                    location.pathname === '/otp-verification' ||
-                    location.pathname === '/otp-verification-reset';
-
   return (
     <>
       <Outlet />
-      {!isAuthPage && <PublicChatbot />}
+      <PublicChatbot />
     </>
   );
 };
