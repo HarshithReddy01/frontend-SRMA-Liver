@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  base: '/PanInsight/',
+  base: '/frontend-SRMA-Liver/',
   plugins: [react()],
   server: {
     port: 3000,
