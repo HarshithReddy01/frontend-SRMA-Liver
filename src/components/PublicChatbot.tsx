@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiMessageCircle, FiSend } from 'react-icons/fi';
 import pancreasIcon from '../assets/pancreas-icon.png';
+import { getDeepInfraApiKey } from '../config/api';
 
 interface Message {
   id: string;
@@ -44,11 +45,12 @@ const PublicChatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
+      const apiKey = getDeepInfraApiKey();
       const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer mVF4JYfmpeE8ywod0P1cGzalCQNjG1kQ'
+          'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
           model: 'meta-llama/Meta-Llama-3-8B-Instruct',
@@ -86,7 +88,6 @@ const PublicChatbot: React.FC = () => {
         setMessages((prev: Message[]) => [...prev, botMessage]);
       }
     } catch (error) {
-      console.error('Error sending message:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         text: "I'm having trouble connecting right now. Please try again in a moment.",

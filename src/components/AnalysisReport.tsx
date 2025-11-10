@@ -175,7 +175,7 @@ const AnalysisReport: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-400 dark:bg-green-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
         <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
@@ -208,7 +208,7 @@ const AnalysisReport: React.FC = () => {
         </div>
 
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent sm:text-5xl lg:text-6xl mb-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-green-800 dark:from-white dark:via-blue-200 dark:to-green-200 bg-clip-text text-transparent sm:text-5xl lg:text-6xl mb-4">
             AI Analysis Report
           </h1>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
@@ -223,7 +223,7 @@ const AnalysisReport: React.FC = () => {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-103 ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-blue-600 to-green-600 text-white shadow-lg'
                   : 'bg-white/80 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-slate-700/80 border border-slate-200/50 dark:border-slate-700/50'
               }`}
             >
@@ -259,10 +259,10 @@ const AnalysisReport: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 rounded-xl p-6 border border-purple-200/50 dark:border-purple-700/50">
+                <div className="bg-gradient-to-br from-green-50 to-pink-50 dark:from-green-900/30 dark:to-pink-900/30 rounded-xl p-6 border border-green-200/50 dark:border-green-700/50">
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-medium text-purple-700 dark:text-purple-300">Risk Level</h3>
-                    <svg className="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <h3 className="text-sm font-medium text-green-700 dark:text-green-300">Risk Level</h3>
+                    <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                     </svg>
                   </div>
@@ -328,7 +328,7 @@ const AnalysisReport: React.FC = () => {
           {activeTab === 'recommendations' && (
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 flex items-center">
-                <svg className="w-6 h-6 mr-3 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 mr-3 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
                 Actionable Recommendations
@@ -336,10 +336,10 @@ const AnalysisReport: React.FC = () => {
               
               <div className="grid gap-4">
                 {reportData.recommendations.map((recommendation, index) => (
-                  <div key={index} className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-200/50 dark:border-purple-700/50">
+                  <div key={index} className="bg-gradient-to-r from-green-50 to-pink-50 dark:from-green-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-green-200/50 dark:border-green-700/50">
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-800/50 rounded-full flex items-center justify-center mr-4">
-                        <svg className="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-800/50 rounded-full flex items-center justify-center mr-4">
+                        <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
@@ -461,7 +461,7 @@ const AnalysisReport: React.FC = () => {
               printWindow.focus();
               setTimeout(() => printWindow.print(), 500);
             }}
-            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-103 shadow-lg hover:shadow-xl"
+            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-103 shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -470,7 +470,7 @@ const AnalysisReport: React.FC = () => {
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-103 shadow-lg hover:shadow-xl"
+            className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-pink-600 to-green-600 hover:from-pink-700 hover:to-green-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-103 shadow-lg hover:shadow-xl"
           >
             <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

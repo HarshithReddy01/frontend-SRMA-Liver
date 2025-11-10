@@ -203,11 +203,11 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
   const canAnalyze = fileInfo && hasConsent && !isAnalyzing;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-all duration-500">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 dark:bg-blue-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 dark:bg-purple-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 dark:bg-pink-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-400 dark:bg-green-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-green-400 dark:bg-green-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-green-400 dark:bg-green-600 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
       </div>
 
       
@@ -215,7 +215,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
         <div className="flex items-center justify-start">
           <Link
             to="/"
-            className="group inline-flex items-center px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-full text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all duration-300 hover:shadow-lg hover:scale-103"
+            className="group inline-flex items-center px-4 py-2 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 rounded-full text-slate-700 dark:text-slate-300 hover:text-green-600 dark:hover:text-green-400 font-medium transition-all duration-300 hover:shadow-lg hover:scale-103"
           >
             <svg className="w-5 h-5 mr-2 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -227,7 +227,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
       
       <div className="relative max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent sm:text-5xl lg:text-6xl mb-6">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 via-green-800 to-green-800 dark:from-white dark:via-green-200 dark:to-green-200 bg-clip-text text-transparent sm:text-5xl lg:text-6xl mb-6">
             Upload Medical Scan
           </h1>
           
@@ -237,13 +237,13 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
             </p>
             
             <div className="flex flex-wrap justify-center gap-4 mt-6">
-              <div className="flex items-center px-3 py-1 bg-blue-100 dark:bg-blue-900/30 rounded-full text-sm text-blue-700 dark:text-blue-300">
+              <div className="flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full text-sm text-green-700 dark:text-green-300">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Secure Upload
               </div>
-              <div className="flex items-center px-3 py-1 bg-purple-100 dark:bg-purple-900/30 rounded-full text-sm text-purple-700 dark:text-purple-300">
+              <div className="flex items-center px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full text-sm text-green-700 dark:text-green-300">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -259,20 +259,20 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
           </div>
         </div>
 
-        <div className="mb-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200/50 dark:border-blue-700/50 rounded-2xl backdrop-blur-sm shadow-lg">
+        <div className="mb-8 p-6 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/30 dark:to-green-900/30 border border-green-200/50 dark:border-green-700/50 rounded-2xl backdrop-blur-sm shadow-lg">
           <div className="flex items-start">
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 bg-blue-100 dark:bg-blue-800/50 rounded-full flex items-center justify-center">
-                <svg className="w-5 h-5 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+              <div className="w-10 h-10 bg-green-100 dark:bg-green-800/50 rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
               </div>
             </div>
             <div className="ml-4">
-              <h3 className="text-lg font-semibold text-blue-800 dark:text-blue-200">
+              <h3 className="text-lg font-semibold text-green-800 dark:text-green-200">
                 Privacy & Security First
               </h3>
-              <p className="mt-2 text-blue-700 dark:text-blue-300">
+              <p className="mt-2 text-green-700 dark:text-green-300">
                 We respect your privacy. Your scan will be analyzed only with your consent and never stored without approval. All data is encrypted and processed securely.
               </p>
             </div>
@@ -284,8 +284,8 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
             <div
               className={`relative border-2 border-dashed rounded-2xl text-center transition-all duration-500 transform hover:scale-103 ${
                 isDragOver
-                  ? 'p-8 border-blue-500 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 shadow-2xl scale-105'
-                  : 'p-8 border-slate-300 dark:border-slate-600 hover:border-blue-400 dark:hover:border-blue-500 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm shadow-lg'
+                  ? 'p-8 border-green-500 bg-gradient-to-r from-green-50 to-green-50 dark:from-green-900/20 dark:to-green-900/20 shadow-2xl scale-105'
+                  : 'p-8 border-slate-300 dark:border-slate-600 hover:border-green-400 dark:hover:border-green-500 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm shadow-lg'
               }`}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -293,7 +293,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
               onDrop={handleDrop}
             >
               <div className="mb-6">
-                <div className={`mx-auto bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-600 rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 transform hover:scale-110 ${
+                <div className={`mx-auto bg-gradient-to-r from-green-500 via-green-600 to-green-600 rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 transform hover:scale-110 ${
                   isPulsing ? 'animate-ping' : 'animate-pulse'
                 } w-20 h-20`}>
                   <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,7 +311,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold transition-colors duration-200 underline decoration-2 underline-offset-4"
+                    className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors duration-200 underline decoration-2 underline-offset-4"
                   >
                     browse files
                   </button>
@@ -356,43 +356,57 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
             {fileInfo && (
               <div className="bg-gradient-to-br from-white/80 to-slate-50/80 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm rounded-2xl p-4 shadow-xl border border-slate-200/50 dark:border-slate-600/50">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
-                  <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                   Selected File
                 </h3>
                 
                 <div className="space-y-3">
-                  {fileInfo.preview ? (
-                    <div className="w-48 h-48 bg-white dark:bg-slate-700 rounded-lg overflow-hidden shadow-md relative group mx-auto">
-                      <img
-                        src={fileInfo.preview}
-                        alt="File preview"
-                        className="w-full h-full object-contain"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-2">
-                        <button
-                          onClick={() => setShowViewer(true)}
-                          className="text-white text-xs font-medium"
-                        >
-                          View
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="w-48 h-48 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg border border-slate-200 dark:border-slate-600 flex items-center justify-center shadow-md mx-auto">
-                      <div className="text-center">
-                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-2">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
+                  <div className="w-full h-64 bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-xl border-2 border-green-200 dark:border-green-700 flex items-center justify-center shadow-lg mx-auto relative overflow-hidden">
+                    {fileInfo.preview ? (
+                      <>
+                        <img
+                          src={fileInfo.preview}
+                          alt="File preview"
+                          className="w-full h-full object-contain"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-green-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-2">
+                          <button
+                            onClick={() => setShowViewer(true)}
+                            className="text-white text-xs font-medium"
+                          >
+                            View
+                          </button>
                         </div>
-                        <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                          NIfTI
+                      </>
+                    ) : (
+                      <div className="text-center p-6">
+                        <div className="relative mb-4">
+                          <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto shadow-lg transform rotate-3">
+                            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                          </div>
+                          <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        </div>
+                        <h4 className="text-lg font-bold text-green-700 dark:text-green-300 mb-1">
+                          File Uploaded
+                        </h4>
+                        <p className="text-sm font-medium text-green-600 dark:text-green-400">
+                          3D NIfTI Volume
                         </p>
+                        <div className="mt-4 flex items-center justify-center space-x-2">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <span className="text-xs text-green-600 dark:text-green-400">Ready for Analysis</span>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
 
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
@@ -425,7 +439,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                   type="checkbox"
                   checked={hasConsent}
                   onChange={(e) => setHasConsent(e.target.checked)}
-                  className="mt-1 h-5 w-5 text-blue-600 dark:text-blue-500 border-slate-300 dark:border-slate-600 rounded focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 transition-all duration-200"
+                  className="mt-1 h-5 w-5 text-green-600 dark:text-green-500 border-slate-300 dark:border-slate-600 rounded focus:ring-green-500 dark:focus:ring-green-400 focus:ring-2 transition-all duration-200"
                 />
                 <label htmlFor="consent" className="ml-3 text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                   I give consent to analyze this scan with LiverProfile AI. I understand that this analysis is for informational purposes only and should not replace professional medical advice.
@@ -439,7 +453,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                 disabled={!canAnalyze}
                 className={`w-full py-4 px-6 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-103 ${
                   canAnalyze
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl'
+                    ? 'bg-gradient-to-r from-green-600 to-green-600 hover:from-green-700 hover:to-green-700 text-white shadow-xl hover:shadow-2xl'
                     : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed'
                 }`}
               >
