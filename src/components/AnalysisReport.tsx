@@ -15,6 +15,11 @@ interface ReportData {
   riskLevel: 'Low' | 'Medium' | 'High';
   nextSteps: string[];
   followUpTimeline: string;
+  overlayImage?: string;
+  statistics?: any;
+  medicalReport?: any;
+  segmentationFile?: string;
+  maskDownloadUrl?: string;
 }
 
 const AnalysisReport: React.FC = () => {
@@ -88,7 +93,7 @@ const AnalysisReport: React.FC = () => {
       const logoBase64 = await getBase64Image(PancreasIcon);
       doc.addImage(logoBase64, 'PNG', 10, 10, 20, 20);
     } catch (e) {
-      
+      // Logo loading failed, continue without it
     }
     doc.setFontSize(18);
     doc.text('LiverProfile AI Analysis Report', 35, 20);
@@ -107,17 +112,48 @@ const AnalysisReport: React.FC = () => {
     doc.text(`Confidence: ${reportData.confidence}%`, 10, 77);
     doc.text(`Risk Level: ${reportData.riskLevel}`, 10, 83);
     
+    // Add segmentation statistics if available
+    let nextY = 93;
+    if (reportData.statistics) {
+      doc.setFontSize(13);
+      doc.text('Segmentation Statistics', 10, nextY);
+      nextY += 7;
+      doc.setFontSize(10);
+      if (reportData.statistics.liver_volume_ml) {
+        doc.text(`Liver Volume: ${reportData.statistics.liver_volume_ml.toFixed(2)} ml`, 10, nextY);
+        nextY += 6;
+      }
+      if (reportData.statistics.liver_percentage) {
+        doc.text(`Liver Percentage: ${reportData.statistics.liver_percentage.toFixed(2)}%`, 10, nextY);
+        nextY += 6;
+      }
+      if (reportData.statistics.liver_voxels) {
+        doc.text(`Liver Voxels: ${reportData.statistics.liver_voxels.toLocaleString()}`, 10, nextY);
+        nextY += 6;
+      }
+      if (reportData.statistics.total_voxels) {
+        doc.text(`Total Voxels: ${reportData.statistics.total_voxels.toLocaleString()}`, 10, nextY);
+        nextY += 6;
+      }
+      if (reportData.statistics.modality) {
+        doc.text(`Modality: ${reportData.statistics.modality}`, 10, nextY);
+        nextY += 6;
+      }
+      nextY += 3;
+    }
+    
     doc.setFontSize(13);
-    doc.text('Findings', 10, 93);
+    doc.text('Findings', 10, nextY);
+    nextY += 3;
     autoTable(doc, {
-      startY: 96,
+      startY: nextY,
       head: [['#', 'Finding']],
       body: reportData.findings.map((f, i) => [i + 1, f]),
       theme: 'striped',
       headStyles: { fillColor: [41, 128, 185] },
       styles: { fontSize: 10 },
     });
-    let nextY = (doc as any).lastAutoTable.finalY + 6;
+    nextY = (doc as any).lastAutoTable.finalY + 6;
     
     doc.setFontSize(13);
     doc.text('Recommendations', 10, nextY);
@@ -148,7 +184,82 @@ const AnalysisReport: React.FC = () => {
     doc.setFontSize(13);
     doc.text('Follow-up Timeline', 10, nextY);
     doc.setFontSize(10);
-    doc.text(reportData.followUpTimeline, 10, nextY + 7);
+    const followUpLines = doc.splitTextToSize(reportData.followUpTimeline, 180);
+    doc.text(followUpLines, 10, nextY + 7);
+    nextY += followUpLines.length * 5 + 10;
+    
+    // Add medical report details if available
+    if (reportData.medicalReport) {
+      const medReport = reportData.medicalReport;
+      if (nextY > 250) {
+        doc.addPage();
+        nextY = 20;
+      }
+      
+      doc.setFontSize(13);
+      doc.text('Detailed Medical Report', 10, nextY);
+      nextY += 7;
+      doc.setFontSize(10);
+      
+      if (medReport.impression) {
+        doc.setFontSize(11);
+        doc.text('Impression:', 10, nextY);
+        nextY += 6;
+        doc.setFontSize(10);
+        const impressionLines = doc.splitTextToSize(medReport.impression, 180);
+        doc.text(impressionLines, 10, nextY);
+        nextY += impressionLines.length * 5 + 5;
+      }
+      
+      if (medReport.measurements) {
+        if (nextY > 250) {
+          doc.addPage();
+          nextY = 20;
+        }
+        doc.setFontSize(11);
+        doc.text('Quantitative Measurements:', 10, nextY);
+        nextY += 6;
+        doc.setFontSize(10);
+        
+        const measurements = medReport.measurements;
+        if (measurements.morphology) {
+          doc.text(`Connected Components: ${measurements.morphology.connected_components || 'N/A'}`, 10, nextY);
+          nextY += 6;
+          doc.text(`Fragmentation Level: ${measurements.morphology.fragmentation || 'N/A'}`, 10, nextY);
+          nextY += 6;
+        }
+        nextY += 3;
+      }
+      
+      if (medReport.quality_assessment && medReport.quality_assessment.length > 0) {
+        if (nextY > 250) {
+          doc.addPage();
+          nextY = 20;
+        }
+        doc.setFontSize(11);
+        doc.text('Quality Assessment:', 10, nextY);
+        nextY += 6;
+        doc.setFontSize(10);
+        medReport.quality_assessment.forEach((note: string) => {
+          const noteLines = doc.splitTextToSize(`• ${note}`, 180);
+          doc.text(noteLines, 10, nextY);
+          nextY += noteLines.length * 5;
+        });
+        nextY += 3;
+      }
+    }
+    
+    // Add disclaimer
+    if (nextY > 250) {
+      doc.addPage();
+      nextY = 20;
+    }
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    const disclaimer = reportData.medicalReport?.disclaimer || 'This report is generated automatically and should be reviewed by a qualified healthcare professional.';
+    const disclaimerLines = doc.splitTextToSize(disclaimer, 180);
+    doc.text(disclaimerLines, 10, nextY);
+    
     doc.save('LiverProfile-Report.pdf');
   };
 
@@ -271,6 +382,79 @@ const AnalysisReport: React.FC = () => {
                   Based on the findings, we've provided specific recommendations and next steps for your healthcare provider.
                 </p>
               </div>
+
+              {reportData.overlayImage && (
+                <div className="bg-gradient-to-br from-white/80 to-slate-50/80 dark:from-slate-800/80 dark:to-slate-700/80 rounded-xl p-6 border border-slate-200/50 dark:border-slate-600/50">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Segmentation Overlay
+                  </h3>
+                  <div className="flex justify-center">
+                    <img 
+                      src={reportData.overlayImage} 
+                      alt="Liver segmentation overlay" 
+                      className="max-w-full h-auto rounded-lg shadow-lg border border-slate-200 dark:border-slate-700"
+                    />
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-4 text-center">
+                    Green overlay indicates segmented liver region
+                  </p>
+                </div>
+              )}
+
+              {reportData.statistics && (
+                <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/30 dark:to-blue-900/30 rounded-xl p-6 border border-green-200/50 dark:border-green-700/50">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Segmentation Statistics
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Liver Volume</p>
+                      <p className="text-lg font-bold text-green-700 dark:text-green-300">
+                        {reportData.statistics.liver_volume_ml?.toFixed(2) || 'N/A'} ml
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Liver Percentage</p>
+                      <p className="text-lg font-bold text-green-700 dark:text-green-300">
+                        {reportData.statistics.liver_percentage?.toFixed(2) || 'N/A'}%
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Total Voxels</p>
+                      <p className="text-lg font-bold text-green-700 dark:text-green-300">
+                        {reportData.statistics.liver_voxels?.toLocaleString() || 'N/A'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {reportData.maskDownloadUrl && (
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-xl p-6 border border-blue-200/50 dark:border-blue-700/50">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download Segmentation Mask
+                  </h3>
+                  <a
+                    href={reportData.maskDownloadUrl}
+                    download
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download 3D Segmentation (.nii.gz)
+                  </a>
+                </div>
+              )}
             </div>
         </div>
 
@@ -315,6 +499,16 @@ const AnalysisReport: React.FC = () => {
                       <div>Confidence: <b>${reportData.confidence}%</b></div>
                       <div>Risk Level: <b>${reportData.riskLevel}</b></div>
                     </div>
+                    ${reportData.statistics ? `
+                    <div class="section">
+                      <div class="section-title">Segmentation Statistics</div>
+                      ${reportData.statistics.liver_volume_ml ? `<div>Liver Volume: <b>${reportData.statistics.liver_volume_ml.toFixed(2)} ml</b></div>` : ''}
+                      ${reportData.statistics.liver_percentage ? `<div>Liver Percentage: <b>${reportData.statistics.liver_percentage.toFixed(2)}%</b></div>` : ''}
+                      ${reportData.statistics.liver_voxels ? `<div>Liver Voxels: <b>${reportData.statistics.liver_voxels.toLocaleString()}</b></div>` : ''}
+                      ${reportData.statistics.total_voxels ? `<div>Total Voxels: <b>${reportData.statistics.total_voxels.toLocaleString()}</b></div>` : ''}
+                      ${reportData.statistics.modality ? `<div>Modality: <b>${reportData.statistics.modality}</b></div>` : ''}
+                    </div>
+                    ` : ''}
                     <div class="section">
                       <div class="section-title">Findings</div>
                       <table><thead><tr><th>#</th><th>Finding</th></tr></thead><tbody>
@@ -337,7 +531,29 @@ const AnalysisReport: React.FC = () => {
                       <div class="section-title">Follow-up Timeline</div>
                       <div>${reportData.followUpTimeline}</div>
                     </div>
-                    <div class="footer">Generated by LiverProfile AI | AI Model Creator: Debesh Jha</div>
+                    ${reportData.medicalReport ? `
+                    <div class="section">
+                      <div class="section-title">Detailed Medical Report</div>
+                      ${reportData.medicalReport.impression ? `<div><strong>Impression:</strong><br/>${reportData.medicalReport.impression}</div>` : ''}
+                      ${reportData.medicalReport.measurements && reportData.medicalReport.measurements.morphology ? `
+                      <div style="margin-top: 16px;">
+                        <strong>Quantitative Measurements:</strong><br/>
+                        Connected Components: ${reportData.medicalReport.measurements.morphology.connected_components || 'N/A'}<br/>
+                        Fragmentation Level: ${reportData.medicalReport.measurements.morphology.fragmentation || 'N/A'}
+                      </div>
+                      ` : ''}
+                      ${reportData.medicalReport.quality_assessment && reportData.medicalReport.quality_assessment.length > 0 ? `
+                      <div style="margin-top: 16px;">
+                        <strong>Quality Assessment:</strong><br/>
+                        ${reportData.medicalReport.quality_assessment.map((note: string) => `• ${note}`).join('<br/>')}
+                      </div>
+                      ` : ''}
+                    </div>
+                    ` : ''}
+                    <div class="footer">
+                      ${reportData.medicalReport?.disclaimer || 'This report is generated automatically and should be reviewed by a qualified healthcare professional.'}<br/>
+                      Generated by LiverProfile AI | AI Model Creator: Debesh Jha
+                    </div>
                   </body>
                 </html>
               `);

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ThemeContext } from '../theme/ThemeContext';
 import ImageViewer from './ImageViewer';
 import ThemeToggle from './ThemeToggle';
+import { API_ENDPOINTS, SegmentationResponse } from '../config/api';
 
 interface UploadScanProps {
   onAnalyze?: (file: File) => void;
@@ -22,6 +23,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
   const [dragCounter, setDragCounter] = useState(0);
   const [isPulsing, setIsPulsing] = useState(false);
   const [showViewer, setShowViewer] = useState(false);
+  const [modality, setModality] = useState<'T1' | 'T2'>('T1');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
@@ -36,9 +38,10 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
   };
 
   const validateFile = (file: File): boolean => {
-    const isValidType = file.name.toLowerCase().endsWith('.nii.gz');
+    const isValidType = file.name.toLowerCase().endsWith('.nii.gz') || file.name.toLowerCase().endsWith('.nii');
     
-    const isValidSize = file.size <= 50 * 1024 * 1024;
+    // Backend accepts up to 2GB
+    const isValidSize = file.size <= 2 * 1024 * 1024 * 1024;
     
     return isValidType && isValidSize;
   };
@@ -51,7 +54,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
 
   const handleFileSelect = useCallback(async (file: File) => {
     if (!validateFile(file)) {
-      alert('Please select a valid NIfTI file (.nii.gz format) under 50MB.');
+      alert('Please select a valid NIfTI file (.nii.gz or .nii format) under 2GB.');
       return;
     }
 
@@ -108,16 +111,63 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
 
   const handleAnalyze = async () => {
     if (!fileInfo || !hasConsent) return;
-    
-
 
     setIsAnalyzing(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      
-      const sampleReportData = {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('file', fileInfo.file);
+      formData.append('modality', modality);
+
+      // Show progress message
+      console.log('Uploading file and starting analysis...');
+
+      // Call the segmentation API
+      const response = await fetch(API_ENDPOINTS.SEGMENT, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+
+      const data: SegmentationResponse = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.error || 'Segmentation failed');
+      }
+
+      // Transform API response to report format
+      const medicalReport = data.medical_report || {};
+      const stats = data.statistics || {} as any;
+
+      // Extract findings and recommendations from medical report
+      const findings = medicalReport.findings || [
+        "Liver segmentation completed successfully",
+        `Liver volume: ${(stats as any).liver_volume_ml?.toFixed(2) || 'N/A'} ml`,
+        `Liver percentage: ${(stats as any).liver_percentage?.toFixed(2) || 'N/A'}%`,
+        `Confidence score: ${medicalReport.measurements?.confidence_score?.toFixed(1) || 'N/A'}%`,
+      ];
+
+      const recommendations = medicalReport.recommendations || [
+        "Review the segmentation results with your healthcare provider",
+        "Share this report with your primary care physician",
+        "Schedule follow-up appointment if recommended",
+      ];
+
+      // Determine risk level based on confidence and volume
+      const confidence = medicalReport.measurements?.confidence_score || 50;
+      let riskLevel: 'Low' | 'Medium' | 'High' = 'Low';
+      if (confidence < 60) {
+        riskLevel = 'High';
+      } else if (confidence < 80) {
+        riskLevel = 'Medium';
+      }
+
+      const reportData = {
         scanType: 'NIfTI MRI Volume',
         analysisDate: new Date().toLocaleDateString('en-US', { 
           year: 'numeric', 
@@ -126,41 +176,34 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
           hour: '2-digit',
           minute: '2-digit'
         }),
-        confidence: Math.floor(Math.random() * 30) + 70, // 70-99%
-        findings: [
-          "No significant abnormalities detected in the liver region",
-          "Normal liver tissue density and structure observed",
-          "Vascular structures appear within normal limits",
-          "No evidence of mass lesions or calcifications",
-          "Liver morphology appears normal"
-        ],
-        recommendations: [
-          "Continue routine monitoring as recommended by your healthcare provider",
-          "Maintain healthy lifestyle habits including balanced diet and regular exercise",
-          "Schedule follow-up imaging in 6-12 months as per standard protocols",
-          "Consider annual screening if you have family history of liver conditions",
-          "Report any new symptoms to your healthcare provider promptly"
-        ],
-        riskLevel: 'Low' as const,
+        confidence: Math.round(confidence),
+        findings,
+        recommendations,
+        riskLevel,
         nextSteps: [
           "Share this report with your primary care physician",
           "Schedule follow-up appointment within 3-6 months",
           "Maintain regular health check-ups",
-          "Monitor for any new symptoms or changes",
-          "Consider genetic counseling if family history is present"
         ],
-        followUpTimeline: "Recommended follow-up in 6-12 months with repeat imaging and consultation with your healthcare provider."
+        followUpTimeline: medicalReport.recommendations?.[0] || "Recommended follow-up in 6-12 months with repeat imaging and consultation with your healthcare provider.",
+        // Store additional data for the report page
+        overlayImage: data.overlay_image,
+        statistics: stats,
+        medicalReport: medicalReport,
+        segmentationFile: data.segmentation_file,
+        maskDownloadUrl: data.mask_download_url ? `${API_ENDPOINTS.SEGMENT.replace('/segment', '')}${data.mask_download_url}` : undefined,
       };
       
-    
-      localStorage.setItem('liverprofile-report', JSON.stringify(sampleReportData));
-      navigate('/report', { state: { reportData: sampleReportData } });
+      localStorage.setItem('liverprofile-report', JSON.stringify(reportData));
+      navigate('/report', { state: { reportData } });
       
       if (onAnalyze) {
         onAnalyze(fileInfo.file);
       }
     } catch (error) {
-      alert('Analysis failed. Please try again.');
+      console.error('Analysis error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Analysis failed. Please try again.';
+      alert(`Analysis failed: ${errorMessage}`);
     } finally {
       setIsAnalyzing(false);
     }
@@ -318,7 +361,7 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                 </p>
                 <div className="flex items-center justify-center space-x-2 text-xs text-slate-500 dark:text-slate-500 mt-4">
                   <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">.nii.gz</span>
-                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">max 50MB</span>
+                  <span className="px-2 py-1 bg-slate-100 dark:bg-slate-700 rounded-full">max 2GB</span>
                 </div>
               </div>
 
@@ -428,6 +471,36 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
                       </span>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+
+            {fileInfo && (
+              <div className="bg-gradient-to-br from-white/80 to-slate-50/80 dark:from-slate-800/80 dark:to-slate-700/80 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-200/50 dark:border-slate-600/50">
+                <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">
+                  MRI Modality
+                </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="T1"
+                      checked={modality === 'T1'}
+                      onChange={(e) => setModality(e.target.value as 'T1' | 'T2')}
+                      className="mr-2 text-green-600 dark:text-green-500"
+                    />
+                    <span className="text-sm text-slate-700 dark:text-slate-300">T1-weighted</span>
+                  </label>
+                  <label className="flex items-center">
+                    <input
+                      type="radio"
+                      value="T2"
+                      checked={modality === 'T2'}
+                      onChange={(e) => setModality(e.target.value as 'T1' | 'T2')}
+                      className="mr-2 text-green-600 dark:text-green-500"
+                    />
+                    <span className="text-sm text-slate-700 dark:text-slate-300">T2-weighted</span>
+                  </label>
                 </div>
               </div>
             )}
