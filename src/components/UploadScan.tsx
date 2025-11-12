@@ -115,19 +115,50 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
     setIsAnalyzing(true);
     
     try {
-      // Create FormData for file upload
+      console.log('Checking API health...');
+      try {
+        const healthResponse = await fetch(API_ENDPOINTS.HEALTH, { method: 'GET' });
+        if (healthResponse.ok) {
+          const healthData = await healthResponse.json();
+          console.log('API Health:', healthData);
+        } else {
+          console.warn('API health check failed:', healthResponse.status);
+        }
+      } catch (healthError) {
+        console.error('API health check error:', healthError);
+        throw new Error(`Cannot connect to API server at ${API_ENDPOINTS.HEALTH}. Please check if the server is running.`);
+      }
+
       const formData = new FormData();
       formData.append('file', fileInfo.file);
       formData.append('modality', modality);
 
-      // Show progress message
       console.log('Uploading file and starting analysis...');
+      console.log('API URL:', API_ENDPOINTS.SEGMENT);
+      console.log('File name:', fileInfo.file.name);
+      console.log('File size:', fileInfo.file.size, 'bytes');
 
-      // Call the segmentation API
-      const response = await fetch(API_ENDPOINTS.SEGMENT, {
-        method: 'POST',
-        body: formData,
-      });
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 1800000);
+
+      let response: Response;
+      try {
+        response = await fetch(API_ENDPOINTS.SEGMENT, {
+          method: 'POST',
+          body: formData,
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+      } catch (error: any) {
+        clearTimeout(timeoutId);
+        if (error.name === 'AbortError') {
+          throw new Error('Request timeout: The analysis is taking too long. Please try again or use a smaller file.');
+        }
+        if (error.message?.includes('Failed to fetch') || error.message?.includes('NetworkError')) {
+          throw new Error('Network error: Could not connect to the server. Please check your internet connection and try again.');
+        }
+        throw error;
+      }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
