@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
   CHATBOT_HEALTH: `${API_BASE_URL}/api/chat/health`,
   SEGMENT: `${API_BASE_URL}/api/segment`,
   HEALTH: `${API_BASE_URL}/api/health`,
+  HEALTH_ALT: `${API_BASE_URL}/health`,
 };
 
 const DEEPINFRA_API_KEY = import.meta.env.VITE_DEEPINFRA_API_KEY || 'mVF4JYfmpeE8ywod0P1cGzalCQNjG1kQ';

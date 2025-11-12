@@ -116,17 +116,33 @@ const UploadScan: React.FC<UploadScanProps> = ({ onAnalyze }) => {
     
     try {
       console.log('Checking API health...');
+      let healthOk = false;
       try {
         const healthResponse = await fetch(API_ENDPOINTS.HEALTH, { method: 'GET' });
         if (healthResponse.ok) {
           const healthData = await healthResponse.json();
           console.log('API Health:', healthData);
+          healthOk = true;
         } else {
-          console.warn('API health check failed:', healthResponse.status);
+          console.warn(`API health check failed at /api/health: ${healthResponse.status}`);
+          try {
+            const healthResponseAlt = await fetch(API_ENDPOINTS.HEALTH_ALT, { method: 'GET' });
+            if (healthResponseAlt.ok) {
+              const healthData = await healthResponseAlt.json();
+              console.log('API Health (alt endpoint):', healthData);
+              healthOk = true;
+            }
+          } catch (e) {
+            console.warn('Alternative health check also failed');
+          }
         }
       } catch (healthError) {
         console.error('API health check error:', healthError);
-        throw new Error(`Cannot connect to API server at ${API_ENDPOINTS.HEALTH}. Please check if the server is running.`);
+        console.log('Proceeding anyway - health check is optional');
+      }
+      
+      if (!healthOk) {
+        console.warn('Health check failed, but proceeding with upload...');
       }
 
       const formData = new FormData();
